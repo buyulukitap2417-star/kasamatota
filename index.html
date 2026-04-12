@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATOTA Kasa | Finansal Yönetim</title>
+    
+    <!-- Kütüphaneler -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { 
+                extend: { 
+                    colors: { 
+                        darkBg: '#020617', 
+                        darkCard: '#0f172a', 
+                        brand: { blue: '#2563eb', orange: '#ea580c' } 
+                    } 
+                } 
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(135deg, #020617, #0f172a, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #f8fafc;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .ambient-orb { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.2; animation: moveOrb 20s infinite alternate ease-in-out; pointer-events: none; }
+        .orb-1 { width: 40vw; height: 40vw; background: #ea580c; top: -10%; left: -10%; }
+        .orb-2 { width: 35vw; height: 35vw; background: #3b82f6; bottom: -10%; right: -10%; }
+        @keyframes moveOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.2); } }
+
+        /* ÖZEL İMLEÇ */
+        body, html, * { cursor: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l15 6-6.5 2L10 19 4 4z" fill="%23ea580c" stroke="%23ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 4, auto !important; }
+        button, a, .cursor-pointer { cursor: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l15 6-6.5 2L10 19 4 4z" fill="%232563eb" stroke="%23ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 4, pointer !important; }
+
+        .liquid-card {
+            background: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+        }
+        .liquid-card:hover { transform: translateY(-4px); border-color: rgba(234, 88, 12, 0.3) !important; }
+        
+        .liquid-card-inner { background: rgba(0, 0, 0, 0.3) !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; }
+
+        .sidebar-link.active { color: #ffffff !important; background-color: rgba(234, 88, 12, 0.9) !important; backdrop-filter: blur(10px); box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.4); }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(234, 88, 12, 0.5); border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="ambient-orb orb-1"></div><div class="ambient-orb orb-2"></div>
+
+    <!-- LOADER -->
+    <div id="loading" class="fixed inset-0 z-[100] bg-darkBg flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="h-10 w-10 border-2 border-slate-800 border-t-orange-600 rounded-full animate-spin"></div>
+    </div>
+
+    <!-- GİRİŞ EKRANI -->
+    <div id="login-overlay" class="min-h-screen flex items-center justify-center p-4 relative z-50">
+        <div class="max-w-md w-full liquid-card p-10 rounded-[3rem] shadow-2xl relative animate__animated animate__fadeIn text-center">
+            <div class="mb-10 text-center">
+                <img src="https://tnhofdyonpbmozqzimzj.supabase.co/storage/v1/object/public/logos/acik.png" alt="MATOTA" class="h-14 w-auto object-contain mx-auto mb-6">
+                <span class="px-5 py-2 liquid-card-inner text-orange-500 rounded-full text-xs font-black uppercase tracking-widest border border-orange-500/20">KASA YÖNETİMİ</span>
+            </div>
+            <form id="login-form" class="space-y-4" onsubmit="window.handleLogin(event)">
+                <input type="email" id="login-email" required class="w-full p-4 rounded-2xl liquid-card-inner outline-none text-white placeholder-slate-500" placeholder="E-posta">
+                <input type="password" id="login-password" required class="w-full p-4 rounded-2xl liquid-card-inner outline-none text-white placeholder-slate-500" placeholder="Şifre">
+                <button type="submit" id="login-btn" class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black uppercase shadow-lg transition hover:brightness-110 mt-4 border border-white/10">KASAYI AÇ</button>
+            </form>
+            <div id="login-error-container" class="mt-4 p-3 bg-red-500/10 rounded-xl hidden text-red-500 text-xs font-bold border border-red-500/20"></div>
+        </div>
+    </div>
+
+    <!-- ANA PANEL -->
+    <div id="app" class="hidden min-h-screen flex flex-col md:flex-row overflow-hidden relative z-10">
+        <aside class="w-full md:w-72 liquid-card border-r border-white/5 flex flex-col h-screen shrink-0">
+            <div class="p-8 text-center">
+                <img src="https://tnhofdyonpbmozqzimzj.supabase.co/storage/v1/object/public/logos/acik.png" alt="MATOTA" class="h-10 w-auto mx-auto mb-2">
+                <p class="text-[9px] font-black tracking-[0.3em] text-orange-500">KASA SİSTEMİ</p>
+            </div>
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar">
+                <button onclick="navigate('dashboard')" id="nav-dashboard" class="sidebar-link w-full flex items-center space-x-4 px-6 py-4 rounded-2xl font-bold text-xs uppercase transition hover:bg-white/5">
+                    <i class="fa-solid fa-vault text-lg"></i><span>Kasa Özeti</span>
+                </button>
+                <button onclick="navigate('transactions')" id="nav-transactions" class="sidebar-link w-full flex items-center space-x-4 px-6 py-4 rounded-2xl font-bold text-xs uppercase transition hover:bg-white/5">
+                    <i class="fa-solid fa-receipt text-lg"></i><span>İşlem Geçmişi</span>
+                </button>
+                <button onclick="navigate('reports')" id="nav-reports" class="sidebar-link w-full flex items-center space-x-4 px-6 py-4 rounded-2xl font-bold text-xs uppercase transition hover:bg-white/5">
+                    <i class="fa-solid fa-chart-pie text-lg"></i><span>Raporlar</span>
+                </button>
+            </nav>
+            <div class="p-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full py-3 text-red-500 hover:bg-red-500/10 rounded-2xl font-black text-[11px] uppercase transition"><i class="fa-solid fa-power-off mr-2"></i> Çıkış Yap</button>
+            </div>
+        </aside>
+
+        <main class="flex-1 h-screen overflow-y-auto custom-scrollbar flex flex-col p-6 md:p-12">
+            <header class="mb-12 flex justify-between items-center shrink-0">
+                <h1 class="text-4xl font-black tracking-tight" id="page-title">...</h1>
+                <div class="flex items-center gap-4">
+                    <div id="balance-badge" class="px-6 py-3 liquid-card rounded-2xl font-black text-green-500 border border-green-500/20 shadow-lg">0.00 ₺</div>
+                </div>
+            </header>
+            <div id="view-content" class="w-full flex-1 max-w-6xl animate__animated animate__fadeIn"></div>
+        </main>
+    </div>
+
+    <!-- MODAL: YENİ İŞLEM -->
+    <div id="transaction-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xl hidden items-center justify-center p-4 z-[9999]">
+        <div class="max-w-lg w-full liquid-card p-10 rounded-[3rem] shadow-2xl relative border border-white/10">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-slate-500 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h3 class="text-2xl font-black mb-8 italic uppercase tracking-tighter text-orange-500">Yeni Kasa İşlemi</h3>
+            <form id="transaction-form" class="space-y-4" onsubmit="window.saveTransaction(event)">
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="button" onclick="setType('income')" id="btn-inc" class="py-4 rounded-xl border-2 border-white/5 font-black text-xs uppercase transition bg-green-500/10 text-green-500 border-green-500/20">Gelir</button>
+                    <button type="button" onclick="setType('expense')" id="btn-exp" class="py-4 rounded-xl border-2 border-white/5 font-black text-xs uppercase transition opacity-50">Gider</button>
+                </div>
+                <input type="hidden" id="t-type" value="income">
+                
+                <div id="student-select-area">
+                    <label class="text-[10px] font-black uppercase text-slate-500 mb-1 block">Öğrenci İlişkilendir (Opsiyonel)</label>
+                    <select id="t-student" class="w-full p-4 rounded-xl liquid-card-inner outline-none text-white border border-white/5">
+                        <option value="">Genel İşlem</option>
+                    </select>
+                </div>
+
+                <input type="number" step="0.01" id="t-amount" required class="w-full p-4 rounded-xl liquid-card-inner outline-none text-white border border-white/5" placeholder="Tutar (₺)">
+                <input type="text" id="t-desc" required class="w-full p-4 rounded-xl liquid-card-inner outline-none text-white border border-white/5" placeholder="Açıklama (Örn: Mart Ayı Taksit)">
+                
+                <button type="submit" id="save-btn" class="w-full bg-orange-600 text-white py-5 rounded-2xl font-black uppercase shadow-lg transition hover:scale-[1.02] border border-white/10 mt-4">İşlemi Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://tnhofdyonpbmozqzimzj.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_xVFfpA85IjnCqIjEJWvtvQ_VZCH_n60"; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let userProfile = null, students = [], transactions = [];
+
+        // UI
+        function hideLoading() { const l = document.getElementById('loading'); if(l) { l.classList.add('opacity-0'); setTimeout(() => l.classList.add('hidden'), 500); } }
+        function logout() { localStorage.clear(); supabaseClient.auth.signOut().then(() => location.reload()); }
+        function closeModal() { document.getElementById('transaction-modal').classList.add('hidden'); document.getElementById('transaction-modal').classList.remove('flex'); }
+        function openModal() { document.getElementById('transaction-modal').classList.remove('hidden'); document.getElementById('transaction-modal').classList.add('flex'); }
+
+        async function handleLogin(e) {
+            e.preventDefault(); const btn = document.getElementById('login-btn'); btn.disabled = true;
+            const { error } = await supabaseClient.auth.signInWithPassword({ email: document.getElementById('login-email').value, password: document.getElementById('login-password').value });
+            if (error) { document.getElementById('login-error-container').innerText = error.message; document.getElementById('login-error-container').classList.remove('hidden'); btn.disabled = false; } else { location.reload(); }
+        }
+
+        async function initAuth() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                const { data } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+                if (data && data.role === 'teacher') {
+                    userProfile = data; 
+                    document.getElementById('login-overlay').classList.add('hidden');
+                    document.getElementById('app').classList.remove('hidden'); document.getElementById('app').classList.add('flex');
+                    await fetchData();
+                    navigate('dashboard');
+                } else { logout(); alert("Sadece öğretmenler girebilir!"); }
+            }
+            hideLoading();
+        }
+
+        async function fetchData() {
+            const { data: s } = await supabaseClient.from('profiles').select('*').eq('role', 'student').order('full_name');
+            students = s || [];
+            const { data: t } = await supabaseClient.from('transactions').select('*, profiles(full_name)').order('created_at', {ascending: false});
+            transactions = t || [];
+            updateBalance();
+            // Fill student select
+            const select = document.getElementById('t-student');
+            select.innerHTML = '<option value="">Genel İşlem</option>' + students.map(st => `<option value="${st.id}">${st.full_name}</option>`).join('');
+        }
+
+        function updateBalance() {
+            const total = transactions.reduce((acc, curr) => curr.type === 'income' ? acc + Number(curr.amount) : acc - Number(curr.amount), 0);
+            document.getElementById('balance-badge').innerText = total.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' });
+            document.getElementById('balance-badge').className = `px-6 py-3 liquid-card rounded-2xl font-black border shadow-lg ${total >= 0 ? 'text-green-500 border-green-500/20' : 'text-red-500 border-red-500/20'}`;
+        }
+
+        function navigate(v) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('nav-'+v).classList.add('active');
+            const cont = document.getElementById('view-content');
+            
+            if(v === 'dashboard') {
+                document.getElementById('page-title').innerText = 'Kasa Özeti';
+                const inc = transactions.filter(t => t.type === 'income').reduce((a, b) => a + Number(b.amount), 0);
+                const exp = transactions.filter(t => t.type === 'expense').reduce((a, b) => a + Number(b.amount), 0);
+                
+                cont.innerHTML = `
+                    <div class="grid md:grid-cols-3 gap-8 mb-12">
+                        <div class="liquid-card p-10 rounded-[3rem] border-l-4 border-l-green-500">
+                            <p class="text-[10px] font-black uppercase opacity-50 mb-2 italic">Toplam Gelir</p>
+                            <p class="text-4xl font-black text-green-500">${inc.toLocaleString('tr-TR')} ₺</p>
+                        </div>
+                        <div class="liquid-card p-10 rounded-[3rem] border-l-4 border-l-red-500">
+                            <p class="text-[10px] font-black uppercase opacity-50 mb-2 italic">Toplam Gider</p>
+                            <p class="text-4xl font-black text-red-500">${exp.toLocaleString('tr-TR')} ₺</p>
+                        </div>
+                        <div class="liquid-card p-10 rounded-[3rem] flex flex-col justify-center items-center group cursor-pointer" onclick="openModal()">
+                            <i class="fa-solid fa-plus-circle text-4xl text-orange-500 mb-4 group-hover:scale-110 transition"></i>
+                            <p class="font-black text-xs uppercase tracking-widest">İşlem Ekle</p>
+                        </div>
+                    </div>
+                    <div class="liquid-card p-8 rounded-[3rem]">
+                        <h4 class="font-black uppercase text-xs text-slate-500 mb-6 italic tracking-widest">Son Hareketler</h4>
+                        <div class="space-y-3">${renderTransactionList(5)}</div>
+                    </div>
+                `;
+            } else if(v === 'transactions') {
+                document.getElementById('page-title').innerText = 'İşlem Geçmişi';
+                cont.innerHTML = `
+                    <div class="liquid-card p-8 rounded-[3rem]">
+                        <div class="space-y-3">${renderTransactionList()}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTransactionList(limit = null) {
+            let list = transactions;
+            if(limit) list = transactions.slice(0, limit);
+            return list.map(t => `
+                <div class="flex items-center justify-between p-5 liquid-card-inner rounded-2xl border border-white/5 hover:border-white/10 transition group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl ${t.type === 'income' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}">
+                            <i class="fa-solid ${t.type === 'income' ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down'}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-sm text-white">${t.description}</p>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase">${t.profiles?.full_name || 'Genel İşlem'} • ${new Date(t.created_at).toLocaleDateString('tr-TR')}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-black text-lg ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">${t.type === 'income' ? '+' : '-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</p>
+                        <button onclick="window.deleteTransaction('${t.id}')" class="text-[10px] font-black text-red-500 opacity-0 group-hover:opacity-100 transition uppercase tracking-widest mt-1">Sil</button>
+                    </div>
+                </div>
+            `).join('') || '<p class="p-10 text-center opacity-40 italic">Henüz işlem bulunmuyor.</p>';
+        }
+
+        window.setType = (type) => {
+            document.getElementById('t-type').value = type;
+            document.getElementById('btn-inc').className = `py-4 rounded-xl border-2 font-black text-xs uppercase transition ${type === 'income' ? 'bg-green-500/10 text-green-500 border-green-500/20 opacity-100' : 'opacity-50 border-white/5'}`;
+            document.getElementById('btn-exp').className = `py-4 rounded-xl border-2 font-black text-xs uppercase transition ${type === 'expense' ? 'bg-red-500/10 text-red-500 border-red-500/20 opacity-100' : 'opacity-50 border-white/5'}`;
+        };
+
+        window.saveTransaction = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.disabled = true; btn.innerText = "KAYDEDİLİYOR...";
+            
+            const payload = {
+                teacher_id: userProfile.id,
+                student_id: document.getElementById('t-student').value || null,
+                amount: document.getElementById('t-amount').value,
+                description: document.getElementById('t-desc').value,
+                type: document.getElementById('t-type').value
+            };
+
+            const { error } = await supabaseClient.from('transactions').insert([payload]);
+            if(!error) {
+                await fetchData();
+                closeModal();
+                navigate(localStorage.getItem('lastView'));
+                document.getElementById('transaction-form').reset();
+            } else alert(error.message);
+            btn.disabled = false; btn.innerText = "İşlemi Kaydet";
+        };
+
+        window.deleteTransaction = async (id) => {
+            if(!confirm('Bu işlemi silmek istediğine emin misin Ali Hoca?')) return;
+            await supabaseClient.from('transactions').delete().eq('id', id);
+            await fetchData();
+            navigate(localStorage.getItem('lastView'));
+        };
+
+        window.onload = initAuth;
+    </script>
+</body>
+</html>
