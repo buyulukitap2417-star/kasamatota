@@ -79,20 +79,20 @@
     <!-- LOADER -->
     <div id="loading" class="fixed inset-0 z-[100] bg-darkBg flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="h-10 w-10 border-2 border-slate-800 border-t-orange-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-[10px] font-black uppercase tracking-[0.3em] text-orange-500">Kasa Pro Mühürleniyor</p>
+        <p class="mt-4 text-[10px] font-black uppercase tracking-[0.3em] text-orange-500">MATOTA KASA PRO MÜHÜRLENİYOR</p>
     </div>
 
     <!-- GİRİŞ EKRANI -->
     <div id="login-overlay" class="fixed inset-0 min-h-screen flex items-center justify-center p-4 z-[9999] bg-darkBg hidden">
-        <div class="max-w-md w-full glass-card p-10 rounded-[3rem] shadow-2xl relative text-center border border-white/10">
+        <div class="max-w-md w-full glass-card p-10 rounded-[3rem] shadow-2xl relative text-center border border-white/10 animate__animated animate__fadeIn">
             <div class="mb-10 text-center">
                 <img src="https://tnhofdyonpbmozqzimzj.supabase.co/storage/v1/object/public/logos/acik.png" alt="MATOTA" class="h-14 w-auto object-contain mx-auto mb-6">
                 <span class="px-5 py-2 liquid-inner text-orange-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-500/20 shadow-sm italic">Finansal Komuta Merkezi</span>
             </div>
             <form id="login-form" class="space-y-4" onsubmit="window.handleLogin(event)">
-                <input type="email" id="login-email" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white placeholder-slate-500 font-medium border border-white/5 focus:border-orange-500 transition" placeholder="Yönetici E-postası">
-                <input type="password" id="login-password" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white placeholder-slate-500 font-medium border border-white/5 focus:border-orange-500 transition" placeholder="Güvenlik Şifresi">
-                <button type="submit" id="login-btn" class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black uppercase shadow-lg transition hover:brightness-110 mt-4 border border-white/10 tracking-widest">Sisteme Giriş Yap</button>
+                <input type="email" id="login-email" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white placeholder-slate-500 font-medium border border-white/5 focus:border-orange-500 transition" placeholder="E-posta">
+                <input type="password" id="login-password" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white placeholder-slate-500 font-medium border border-white/5 focus:border-orange-500 transition" placeholder="Şifre">
+                <button type="submit" id="login-btn" class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black uppercase shadow-lg transition hover:brightness-110 mt-4 border border-white/10 tracking-widest">Kasayı Aç</button>
             </form>
             <div id="login-error-container" class="mt-4 p-3 bg-red-500/10 rounded-xl hidden text-red-500 text-xs font-bold border border-red-500/20 text-center uppercase tracking-widest"></div>
         </div>
@@ -104,7 +104,7 @@
         <aside class="w-full md:w-72 glass-card border-r border-white/5 flex flex-col h-screen shrink-0">
             <div class="p-8 text-center border-b border-white/5">
                 <img src="https://tnhofdyonpbmozqzimzj.supabase.co/storage/v1/object/public/logos/acik.png" alt="MATOTA" class="h-10 w-auto mx-auto mb-2 drop-shadow-md">
-                <p class="text-[9px] font-black tracking-[0.4em] text-orange-500 uppercase italic">Kasa Pro Elite</p>
+                <p class="text-[9px] font-black tracking-[0.4em] text-orange-500 uppercase italic">Kasa Elite Edition</p>
             </div>
             <nav class="flex-1 px-4 py-8 space-y-3 overflow-y-auto custom-scrollbar">
                 <button onclick="navigate('dashboard')" id="nav-dashboard" class="sidebar-link w-full flex items-center space-x-4 px-6 py-4 rounded-2xl font-bold text-xs uppercase transition hover:bg-white/5">
@@ -120,12 +120,12 @@
                     <i class="fa-solid fa-heart text-lg"></i><span>Babaanne Kasası</span>
                 </button>
                 <button onclick="navigate('reports')" id="nav-reports" class="sidebar-link w-full flex items-center space-x-4 px-6 py-4 rounded-2xl font-bold text-xs uppercase transition hover:bg-white/5">
-                    <i class="fa-solid fa-chart-pie text-lg"></i><span>Finansal Analiz</span>
+                    <i class="fa-solid fa-chart-pie text-lg"></i><span>Görsel Analiz</span>
                 </button>
             </nav>
             <div class="p-6 border-t border-white/5 flex flex-col gap-3">
                 <div class="flex items-center gap-3 px-2 mb-2">
-                    <div class="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center font-black text-xs text-white shadow-lg">A</div>
+                    <div class="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center font-black text-xs text-white">A</div>
                     <p class="text-[10px] font-black uppercase text-slate-400 truncate" id="user-name-display">...</p>
                 </div>
                 <button onclick="logout()" class="w-full py-3 text-red-500 hover:bg-red-500/10 rounded-2xl font-black text-[10px] uppercase transition border border-red-500/10">Çıkış Yap</button>
@@ -137,6 +137,11 @@
             <header class="sticky top-0 z-40 bg-darkBg/60 backdrop-blur-md p-6 md:px-12 flex justify-between items-center border-b border-white/5">
                 <h1 class="text-2xl font-black tracking-tight uppercase italic drop-shadow-md" id="view-title">...</h1>
                 <div class="flex items-center gap-4">
+                    <div class="hidden lg:flex gap-2">
+                        <div class="px-4 py-2 liquid-inner border border-white/10 rounded-xl text-[10px] font-black uppercase">
+                            Kasa Mevcudiyeti: <span id="header-total-balance" class="text-green-500">0 ₺</span>
+                        </div>
+                    </div>
                     <button onclick="openModal()" class="px-6 py-3 bg-orange-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg hover:scale-105 transition border border-white/10">
                         <i class="fa-solid fa-plus-circle mr-2 text-sm"></i>YENİ İŞLEM GİR
                     </button>
@@ -147,37 +152,36 @@
                 
                 <!-- TAB: DASHBOARD -->
                 <div id="tab-dashboard" class="tab-content">
-                    <!-- Temel Statlar -->
                     <div class="grid md:grid-cols-4 gap-6 mb-10">
-                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-green-500">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Bu Ay Gelir</p>
+                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-green-500 shadow-xl">
+                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Bu Ay Toplam Gelir</p>
                             <p class="text-2xl font-black text-green-500" id="stat-month-income">0 ₺</p>
                         </div>
-                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-red-500">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Bu Ay Gider</p>
+                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-red-500 shadow-xl">
+                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Bu Ay Toplam Gider</p>
                             <p class="text-2xl font-black text-red-500" id="stat-month-expense">0 ₺</p>
                         </div>
-                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-blue-500">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Net Durum (Ay)</p>
+                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-blue-500 shadow-xl">
+                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Net Durum (Aylık)</p>
                             <p class="text-2xl font-black text-blue-500" id="stat-month-net">0 ₺</p>
                         </div>
-                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-orange-500">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Toplam Kasa</p>
+                        <div class="glass-card p-6 rounded-[2rem] border-l-4 border-l-orange-500 shadow-xl">
+                            <p class="text-[9px] font-black uppercase text-slate-500 mb-1 tracking-widest">Genel Mevcudiyet</p>
                             <p class="text-2xl font-black text-white" id="stat-total-balance">0 ₺</p>
                         </div>
                     </div>
 
-                    <!-- İleri Seviye Dashboard Kutucukları -->
-                    <div class="grid md:grid-cols-4 gap-6 mb-12">
-                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-3 tracking-widest italic">Lider Banka (Gelir)</p>
+                    <!-- Yeni 4'lü Rasyonel Stat Paneli -->
+                    <div class="grid md:grid-cols-4 gap-6 mb-12 animate__animated animate__fadeInUp">
+                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card bg-green-500/5">
+                            <p class="text-[9px] font-black uppercase text-green-500 mb-3 tracking-widest italic">Lider Banka (Gelir)</p>
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-building-columns text-orange-500 text-xl opacity-60"></i>
+                                <i class="fa-solid fa-building-columns text-green-500 text-xl opacity-60"></i>
                                 <p class="text-base font-black text-white uppercase tracking-tighter" id="adv-top-bank">-</p>
                             </div>
                         </div>
-                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card">
-                            <p class="text-[9px] font-black uppercase text-slate-500 mb-3 tracking-widest italic">Yoğun Gider Kalemi</p>
+                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card bg-red-500/5">
+                            <p class="text-[9px] font-black uppercase text-red-500 mb-3 tracking-widest italic">Yoğun Gider Kalemi</p>
                             <div class="flex items-center gap-3">
                                 <i class="fa-solid fa-tags text-red-500 text-xl opacity-60"></i>
                                 <p class="text-base font-black text-white uppercase tracking-tighter" id="adv-top-expense-cat">-</p>
@@ -185,15 +189,15 @@
                         </div>
                         <div class="glass-card p-6 rounded-[2rem] advanced-stat-card">
                             <p class="text-[9px] font-black uppercase text-slate-500 mb-3 tracking-widest italic">Aylık Değişim (Gider)</p>
-                            <div class="flex items-center gap-3" id="adv-monthly-change-area">
+                            <div class="flex items-center gap-3">
                                 <span id="adv-change-icon"></span>
                                 <p class="text-base font-black text-white uppercase tracking-tighter" id="adv-expense-change">%0</p>
                             </div>
                         </div>
-                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card bg-orange-600/5">
-                            <p class="text-[9px] font-black uppercase text-orange-500 mb-3 tracking-widest italic">En Büyük Harcama</p>
+                        <div class="glass-card p-6 rounded-[2rem] advanced-stat-card border-t-orange-500">
+                            <p class="text-[9px] font-black uppercase text-orange-500 mb-3 tracking-widest italic">Zirve Harcama</p>
                             <div class="flex flex-col">
-                                <p class="text-[10px] font-black text-white truncate max-w-[150px]" id="adv-biggest-exp-desc">-</p>
+                                <p class="text-[10px] font-black text-white truncate max-w-[150px] mb-1" id="adv-biggest-exp-desc">-</p>
                                 <p class="text-base font-black text-red-500" id="adv-biggest-exp-amount">0 ₺</p>
                             </div>
                         </div>
@@ -201,11 +205,11 @@
 
                     <div class="grid lg:grid-cols-2 gap-8">
                         <div class="glass-card p-10 rounded-[3rem]">
-                            <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Son Hareketler</h4>
+                            <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Son 10 Finansal Hareket</h4>
                             <div class="space-y-4" id="dashboard-recent-list"></div>
                         </div>
                         <div class="glass-card p-10 rounded-[3rem]">
-                            <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Banka Dağılımı</h4>
+                            <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Banka Dağılımı (Mevcut)</h4>
                             <div class="space-y-6" id="dashboard-bank-stats"></div>
                         </div>
                     </div>
@@ -236,7 +240,7 @@
                                         <th class="p-6">İlişkili Kayıt</th>
                                         <th class="p-6">Kategori / Banka</th>
                                         <th class="p-6 text-right">Tutar</th>
-                                        <th class="p-6 text-right">Eylem</th>
+                                        <th class="p-6 text-right">İşlem</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ledger-table-body" class="text-sm font-medium"></tbody>
@@ -249,20 +253,20 @@
                 <div id="tab-grandmother" class="tab-content">
                     <div class="grid md:grid-cols-3 gap-6 mb-10">
                         <div class="glass-card p-10 rounded-[3rem] border-l-4 border-l-purple-500 text-center">
-                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Babaannemden Gelen</p>
+                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Ondan Gelen</p>
                             <p class="text-4xl font-black text-purple-400" id="gm-total-income">0 ₺</p>
                         </div>
                         <div class="glass-card p-10 rounded-[3rem] border-l-4 border-l-pink-500 text-center">
-                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Babaanneme Giden</p>
+                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Onun İçin Harcanan</p>
                             <p class="text-4xl font-black text-pink-500" id="gm-total-expense">0 ₺</p>
                         </div>
                         <div class="glass-card p-10 rounded-[3rem] border-l-4 border-l-white/20 text-center">
-                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Net Durum</p>
+                            <p class="text-[10px] font-black uppercase text-slate-500 mb-2 italic tracking-widest">Kasa Durumu</p>
                             <p class="text-4xl font-black text-white" id="gm-net-status">0 ₺</p>
                         </div>
                     </div>
                     <div class="glass-card p-8 rounded-[3rem] overflow-hidden">
-                        <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Onunla Olan Tüm Hesaplar</h4>
+                        <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-4">Babaanne İşlem Dökümü</h4>
                         <div id="grandmother-ledger-list" class="space-y-4"></div>
                     </div>
                 </div>
@@ -275,22 +279,22 @@
                 <!-- TAB: REPORTS -->
                 <div id="tab-reports" class="tab-content">
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                        <div class="glass-card p-10 rounded-[3rem] flex flex-col items-center">
-                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Giderlerin Kategori Dağılımı</h4>
+                        <div class="glass-card p-8 rounded-[3rem] flex flex-col items-center">
+                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Giderlerin Kategorik Dağılımı</h4>
                             <div class="w-full aspect-square"><canvas id="expenseChart"></canvas></div>
                         </div>
-                        <div class="glass-card p-10 rounded-[3rem] flex flex-col items-center">
-                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Banka Mevcudiyet Oranı</h4>
+                        <div class="glass-card p-8 rounded-[3rem] flex flex-col items-center">
+                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Banka Mevcudiyet Oranları</h4>
                             <div class="w-full aspect-square"><canvas id="bankPieChart"></canvas></div>
                         </div>
-                        <div class="glass-card p-10 rounded-[3rem] flex flex-col items-center">
-                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Gelir Kaynakları</h4>
+                        <div class="glass-card p-8 rounded-[3rem] flex flex-col items-center">
+                            <h4 class="font-black uppercase text-[10px] text-slate-500 mb-8 italic tracking-widest">Gelir Kaynakları Dağılımı</h4>
                             <div class="w-full aspect-square"><canvas id="incomeChart"></canvas></div>
                         </div>
                     </div>
                     <div class="glass-card p-10 rounded-[3rem]">
-                        <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest">Haftalık Nakit Akış Trendi</h4>
-                        <div class="h-64 w-full"><canvas id="activityChart"></canvas></div>
+                        <h4 class="font-black uppercase text-xs text-slate-500 mb-8 italic tracking-widest border-b border-white/5 pb-6">Finansal Akış Trendi (Son 14 Gün)</h4>
+                        <div class="h-80 w-full"><canvas id="activityChart"></canvas></div>
                     </div>
                 </div>
             </div>
@@ -317,29 +321,29 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">Kategori</label>
-                        <select id="t-category" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase transition focus:border-orange-500"></select>
+                        <select id="t-category" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-orange-500 transition"></select>
                     </div>
                     <div>
                         <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">Banka / Kasa</label>
-                        <select id="t-bank" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase transition focus:border-orange-500">
+                        <select id="t-bank" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-orange-500 transition">
                             <option>Nays</option><option>İş Bankası</option><option>Halkbank</option><option>Garanti BBVA</option><option>YapıKredi</option><option>Nakit / Elden</option>
                         </select>
                     </div>
                 </div>
 
-                <div id="student-relation-area">
-                    <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">İlişkili Kişi</label>
-                    <select id="t-student" class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold transition focus:border-orange-500"></select>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">İlişkili Kayıt</label>
+                    <select id="t-student" class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold focus:border-orange-500 transition"></select>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="md:col-span-1">
                         <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">Tutar (₺)</label>
-                        <input type="number" step="0.01" id="t-amount" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 font-black text-2xl text-center focus:border-orange-500 transition" placeholder="0.00">
+                        <input type="number" step="0.01" id="t-amount" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 font-black text-2xl text-center focus:border-orange-500" placeholder="0.00">
                     </div>
                     <div class="md:col-span-2">
                         <label class="text-[10px] font-black uppercase text-slate-500 mb-2 block italic tracking-widest">İşlem Notu</label>
-                        <input type="text" id="t-desc" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 font-medium text-sm focus:border-orange-500 transition" placeholder="Açıklama giriniz...">
+                        <input type="text" id="t-desc" required class="w-full p-4 rounded-2xl liquid-inner outline-none text-white border border-white/10 font-medium text-sm focus:border-orange-500" placeholder="Açıklama giriniz...">
                     </div>
                 </div>
                 
@@ -359,7 +363,7 @@
         const incomeCategories = ['Kurs Ücreti', 'Özel Ders', 'Kitap Satışı', 'Cashback', 'İade', 'Harçlık', 'Babaannemden Gelen', 'Diğer Gelir'];
         const expenseCategories = ['Market', 'Abonelik', 'Fatura', 'Harçlık', 'Online Alışveriş', 'Yemek Harcamaları', 'Kira', 'Elektrik/Su/İnternet', 'Reklam', 'Hizmet/Personel', 'Babaannem İçin', 'Diğer Gider'];
 
-        // UI CORE
+        // UI
         function hideLoading() { const l = document.getElementById('loading'); if(l) { l.classList.add('opacity-0'); setTimeout(() => l.classList.add('hidden'), 500); } }
         function logout() { localStorage.clear(); supabaseClient.auth.signOut().then(() => location.reload()); }
         function closeModal() { document.getElementById('transaction-modal').classList.add('hidden'); document.getElementById('transaction-modal').classList.remove('flex'); }
@@ -384,9 +388,12 @@
                         document.getElementById('app').classList.add('flex');
                         await fetchData();
                         navigate('dashboard');
-                    } else { logout(); alert("Bu kapı sadece Ali Şengül'e açılır!"); }
-                } else { document.getElementById('login-overlay').classList.remove('hidden'); document.getElementById('login-overlay').classList.add('flex'); }
-            } catch(e) { console.error(err); } finally { hideLoading(); }
+                    } else { logout(); alert("Bu portal sadece eğitmenlere özeldir!"); }
+                } else { 
+                    document.getElementById('login-overlay').classList.remove('hidden'); 
+                    document.getElementById('login-overlay').classList.add('flex'); 
+                }
+            } catch(e) { console.error(e); } finally { hideLoading(); }
         }
 
         async function fetchData() {
@@ -415,6 +422,7 @@
             const pExp = prevMonthData.filter(t => t.type === 'expense').reduce((a, b) => a + Number(b.amount), 0);
             const totalBal = transactions.reduce((acc, curr) => curr.type === 'income' ? acc + Number(curr.amount) : acc - Number(curr.amount), 0);
 
+            // Dashboard Main Cards
             document.getElementById('stat-month-income').innerText = mInc.toLocaleString('tr-TR') + ' ₺';
             document.getElementById('stat-month-expense').innerText = mExp.toLocaleString('tr-TR') + ' ₺';
             document.getElementById('stat-month-net').innerText = (mInc - mExp).toLocaleString('tr-TR') + ' ₺';
@@ -422,16 +430,19 @@
             document.getElementById('header-total-balance').innerText = totalBal.toLocaleString('tr-TR') + ' ₺';
 
             // ADVANCED DASHBOARD CARDS
+            // 1. Lider Banka
             const bankSums = {};
             monthData.filter(t => t.type === 'income').forEach(t => { const b = t.bank_name || 'Nakit'; bankSums[b] = (bankSums[b]||0) + Number(t.amount); });
             const topBank = Object.entries(bankSums).sort((a,b) => b[1]-a[1])[0];
             document.getElementById('adv-top-bank').innerText = topBank ? topBank[0] : 'Veri Yok';
 
+            // 2. Yoğun Gider Kategori
             const expSums = {};
             monthData.filter(t => t.type === 'expense').forEach(t => { expSums[t.category] = (expSums[t.category]||0) + Number(t.amount); });
             const topExpCat = Object.entries(expSums).sort((a,b) => b[1]-a[1])[0];
             document.getElementById('adv-top-expense-cat').innerText = topExpCat ? topExpCat[0] : 'Veri Yok';
 
+            // 3. Aylık Gider Değişimi
             let changePercent = 0; if (pExp > 0) changePercent = Math.round(((mExp - pExp) / pExp) * 100);
             const changeTextEl = document.getElementById('adv-expense-change');
             const iconEl = document.getElementById('adv-change-icon');
@@ -439,6 +450,7 @@
             else if (changePercent < 0) { iconEl.innerHTML = '<i class="fa-solid fa-arrow-trend-down text-green-500"></i>'; changeTextEl.innerText = `%${Math.abs(changePercent)} Azalış`; }
             else { iconEl.innerHTML = '<i class="fa-solid fa-minus text-slate-500"></i>'; changeTextEl.innerText = 'Dengeli'; }
 
+            // 4. Zirve Harcama
             const biggestExp = monthData.filter(t => t.type === 'expense').sort((a,b) => Number(b.amount) - Number(a.amount))[0];
             if(biggestExp) {
                 document.getElementById('adv-biggest-exp-desc').innerText = biggestExp.description;
@@ -452,7 +464,7 @@
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-'+v).classList.add('active');
             
-            const titles = { 'dashboard': 'Finansal Kokpit', 'ledger': 'İşlem Defteri', 'students': 'Öğrenci Cari Takibi', 'grandmother': 'Babaanne Kasası', 'reports': 'Gelişmiş Analizler' };
+            const titles = { 'dashboard': 'Finansal Kokpit', 'ledger': 'İşlem Defteri', 'students': 'Öğrenci Cari Takibi', 'grandmother': 'Babaanne Kasası', 'reports': 'Görsel Analizler' };
             document.getElementById('view-title').innerText = titles[v] || 'MATOTA Kasa';
 
             if(v === 'dashboard') renderDashboardUI();
@@ -483,11 +495,15 @@
             `).join('') || '<p class="text-center opacity-40 italic py-10">İşlem bulunmuyor.</p>';
 
             const banks = {};
-            transactions.forEach(t => { const b = t.bank_name || 'Nakit'; const val = t.type === 'income' ? Number(t.amount) : -Number(t.amount); banks[b] = (banks[b] || 0) + val; });
+            transactions.forEach(t => { 
+                const b = t.bank_name || 'Nakit'; 
+                const val = t.type === 'income' ? Number(t.amount) : -Number(t.amount); 
+                banks[b] = (banks[b] || 0) + val; 
+            });
             document.getElementById('dashboard-bank-stats').innerHTML = Object.entries(banks).map(([name, val]) => `
                 <div class="space-y-2">
                     <div class="flex justify-between text-[10px] font-black uppercase italic tracking-widest"><span class="text-slate-400">${name}</span><span class="${val>=0?'text-green-500':'text-red-500'}">${val.toLocaleString('tr-TR')} ₺</span></div>
-                    <div class="h-1.5 w-full bg-black/40 rounded-full overflow-hidden border border-white/5"><div class="h-full bg-orange-600 rounded-full" style="width: 100%"></div></div>
+                    <div class="h-1.5 w-full bg-black/40 rounded-full overflow-hidden border border-white/5 shadow-inner"><div class="h-full bg-orange-600 rounded-full" style="width: 100%"></div></div>
                 </div>
             `).join('') || '<p class="text-center opacity-40 italic py-10">Veri yok.</p>';
         }
@@ -514,7 +530,6 @@
                             <span class="bank-badge w-fit">${t.bank_name || 'Nakit'}</span>
                         </div>
                     </td>
-                    <td class="p-6 text-[10px] text-slate-400 font-medium italic">${t.description}</td>
                     <td class="p-6 text-right font-black ${t.type === 'income' ? 'text-green-500' : 'text-red-500'}">${t.type === 'income' ? '+' : '-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</td>
                     <td class="p-6 text-right">
                         <div class="flex justify-end gap-2">
@@ -557,7 +572,8 @@
 
         function renderStudentsUI() {
             document.getElementById('student-financial-list').innerHTML = students.map(s => {
-                const totalPaid = transactions.filter(t => t.student_id === s.id && t.type === 'income').reduce((a, b) => a + Number(b.amount), 0);
+                const sTrans = transactions.filter(t => t.student_id === s.id);
+                const totalPaid = sTrans.filter(t => t.type === 'income').reduce((a, b) => a + Number(b.amount), 0);
                 return `
                     <div class="glass-card p-8 rounded-[3rem] text-center group transition hover:scale-[1.03]">
                         <div class="w-16 h-16 rounded-3xl bg-orange-600/10 border border-orange-500/20 mx-auto flex items-center justify-center text-2xl font-black text-orange-500 mb-6 shadow-inner">${s.full_name[0]}</div>
@@ -582,15 +598,15 @@
             bankPieChart = new Chart(document.getElementById('bankPieChart'), { type: 'pie', data: { labels: Object.keys(bankData), datasets: [{ data: Object.values(bankData), backgroundColor: ['#22c55e', '#3b82f6', '#10b981', '#f59e0b', '#6366f1'], borderWidth: 0 }] }, options: opts });
             incomeChart = new Chart(document.getElementById('incomeChart'), { type: 'pie', data: { labels: Object.keys(incData), datasets: [{ data: Object.values(incData), backgroundColor: ['#10b981', '#3b82f6', '#6366f1', '#a855f7', '#ec4899'], borderWidth: 0 }] }, options: opts });
 
-            const last7Days = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return d.toISOString().split('T')[0]; }).reverse();
-            const dailyData = last7Days.map(date => {
+            const last14Days = [...Array(14)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - i); return d.toISOString().split('T')[0]; }).reverse();
+            const dailyData = last14Days.map(date => {
                 const dayTrans = transactions.filter(t => (t.transaction_date || t.created_at).startsWith(date));
                 return { inc: dayTrans.filter(t=>t.type==='income').reduce((a,b)=>a+Number(b.amount),0), exp: dayTrans.filter(t=>t.type==='expense').reduce((a,b)=>a+Number(b.amount),0) };
             });
 
             activityChart = new Chart(document.getElementById('activityChart'), {
                 type: 'line',
-                data: { labels: last7Days.map(d => d.split('-').reverse().slice(0,2).join('/')), datasets: [{ label: 'Gelir', data: dailyData.map(d=>d.inc), borderColor: '#22c55e', tension: 0.4 }, { label: 'Gider', data: dailyData.map(d=>d.exp), borderColor: '#ef4444', tension: 0.4 }] },
+                data: { labels: last14Days.map(d => d.split('-').reverse().slice(0,2).join('/')), datasets: [{ label: 'Gelir', data: dailyData.map(d=>d.inc), borderColor: '#22c55e', tension: 0.4 }, { label: 'Gider', data: dailyData.map(d=>d.exp), borderColor: '#ef4444', tension: 0.4 }] },
                 options: { ...opts, scales: { y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#94a3b8' }, grid: { display: false } } } }
             });
         }
@@ -627,7 +643,8 @@
             btn.disabled = false; btn.innerText = "İŞLEMİ KAYDET";
         };
 
-        window.deleteTransaction = async (id) => { if(confirm('Silmek istediğine emin misin?')) { const { error } = await supabaseClient.from('transactions').delete().eq('id', id); if(!error) { await fetchData(); navigate(localStorage.getItem('lastView')); } } };
+        window.deleteTransaction = async (id) => { if(confirm('Bu kaydı silmek istediğine emin misin Ali Hoca?')) { const { error } = await supabaseClient.from('transactions').delete().eq('id', id); if(!error) { await fetchData(); navigate(localStorage.getItem('lastView')); } } };
+        
         window.onload = initAuth;
     </script>
 </body>
