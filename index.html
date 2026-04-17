@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v12.7</title>
+    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v13.0</title>
     
     <!-- 
-        MATOTA KASA PRO - ULTIMATE WARSHIP EDITION
+        MATOTA KASA PRO - ULTIMATE TURKISH EDITION
         Ali Şengül Modern Eğitim Modeli - Finansal Terminal
-        Version: 12.7 (Fix: Popups, Simplified Charts & Investment History)
+        Version: 13.0 (Turkish Market Focus & Live Tickers)
     -->
 
     <!-- Merkezi Kütüphane Hub'ı -->
@@ -75,18 +75,18 @@
         .glass-card:hover { transform: translateY(-3px); border-color: rgba(37, 99, 235, 0.4) !important; }
         .liquid-inner { background: rgba(0, 0, 0, 0.3) !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 0.75rem; }
 
-        /* --- SIDEBAR & MENU --- */
+        /* --- SIDEBAR & MENU FIX --- */
         .sidebar-fixed { 
             position: fixed; top: 0; left: 0; 
             height: 100vh; width: 240px; 
-            z-index: 1000; 
+            z-index: 5000; 
             display: flex; flex-direction: column;
-            background: rgba(15, 23, 42, 0.8) !important;
-            backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.9) !important;
+            backdrop-filter: blur(30px);
             border-right: 1px solid rgba(255,255,255,0.05);
         }
         
-        .sidebar-link { transition: all 0.3s ease; border-left: 0px solid transparent; opacity: 0.6; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.25rem; width: calc(100% - 20px); border-radius: 0.75rem; margin: 0.25rem 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .sidebar-link { transition: all 0.3s ease; border-left: 0px solid transparent; opacity: 0.6; display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1.25rem; width: calc(100% - 20px); border-radius: 0.75rem; margin: 0.25rem 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
         .sidebar-link:hover { opacity: 1; background: rgba(255,255,255,0.05); }
         .sidebar-link.active { 
             background: linear-gradient(90deg, rgba(37, 99, 235, 0.2) 0%, transparent 100%) !important;
@@ -193,7 +193,7 @@
         </main>
     </div>
 
-    <!-- MODAL HUB -->
+    <!-- MODALLAR -->
     
     <!-- 1. İşlem Girişi Modalı -->
     <div id="transaction-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl hidden items-center justify-center p-4 z-[9999]" onclick="if(event.target === this) window.closeModal('transaction-modal')">
@@ -232,7 +232,7 @@
                     <div>
                         <label class="text-[9px] font-black text-slate-500 uppercase block mb-1">Varlık / Fon Adı</label>
                         <div class="flex gap-2">
-                             <input type="text" id="inv-name" required class="flex-1 p-3 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-black uppercase" placeholder="AFT, BTC..">
+                             <input type="text" id="inv-name" required class="flex-1 p-3 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-black uppercase" placeholder="AFT, TUA, BTC..">
                              <button type="button" onclick="window.fetchLivePrice()" class="px-4 py-2 bg-blue-600 rounded-xl text-white font-black text-[9px] uppercase shadow-md hover:bg-blue-700 transition" id="api-fetch-btn" title="Canlı Veri Çek"><i data-lucide="zap" class="w-4 h-4"></i></button>
                         </div>
                     </div>
@@ -245,10 +245,12 @@
                     <div>
                         <label class="text-[9px] font-black text-slate-500 uppercase block mb-1">Adet</label>
                         <input type="number" step="0.000001" id="inv-qty" required class="w-full p-3 rounded-xl liquid-inner outline-none text-white border border-white/10 font-black text-lg">
+                        <p class="asset-help">Elinizdeki lot sayısı.</p>
                     </div>
                     <div>
                         <label class="text-[9px] font-black text-slate-500 uppercase block mb-1">Birim Alış Fiyatı</label>
                         <input type="number" step="0.0001" id="inv-cost" required class="w-full p-3 rounded-xl liquid-inner outline-none text-white border border-white/10 font-black text-lg">
+                        <p class="asset-help">Ortalama alış maliyetiniz.</p>
                     </div>
                 </div>
                 <div>
@@ -338,16 +340,15 @@
                         if (nameEl) nameEl.innerText = data.full_name;
                         document.getElementById('app').classList.remove('hidden'); 
                         document.getElementById('app').classList.add('flex');
-                        document.getElementById('login-overlay').style.display = 'none';
-                        document.getElementById('login-overlay').classList.add('hidden');
+                        const lo = document.getElementById('login-overlay');
+                        if(lo) { lo.style.display = 'none'; lo.classList.add('hidden'); }
                         await fetchData();
                         await checkScheduledUpdates();
                         navigate(localStorage.getItem('student_last_tab') || 'dashboard');
                     } else { logout(); }
                 } else { 
-                    document.getElementById('login-overlay').classList.remove('hidden'); 
-                    document.getElementById('login-overlay').classList.add('flex'); 
-                    document.getElementById('login-overlay').style.display = 'flex';
+                    const lo = document.getElementById('login-overlay');
+                    if(lo) { lo.classList.remove('hidden'); lo.classList.add('flex'); lo.style.display = 'flex'; }
                 }
             } catch (err) { console.error(err); logout(); } finally {
                 const loader = document.getElementById('loading');
@@ -507,13 +508,13 @@
                         </div>
                     </div>
                     <div class="glass-card p-6 rounded-[2rem] flex flex-col shadow-2xl border-l-8 ${totalPnl >= 0 ? 'border-l-emerald-500' : 'border-l-red-500'}">
-                        <h4 class="font-black uppercase text-[9px] text-slate-500 mb-4 border-b border-white/5 pb-2 italic flex justify-between tracking-widest">ANLIK FON DURUM ÖZETİ <i data-lucide="bar-chart-3" class="w-4"></i></h4>
+                        <h4 class="font-black uppercase text-[9px] text-slate-500 mb-4 border-b border-white/5 pb-2 italic flex justify-between tracking-widest uppercase">Kişisel Fon Karnesi <i data-lucide="bar-chart-3" class="w-4"></i></h4>
                         <div class="grid grid-cols-2 gap-4 flex-1">
                             <div><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 italic">Toplam Maliyet</p><p class="text-xl font-black text-white">${totalCost.toLocaleString('tr-TR')} ₺</p></div>
-                            <div class="text-right"><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 italic">Piyasa Değeri</p><p class="text-xl font-black text-emerald-400">${totalCurrent.toLocaleString('tr-TR')} ₺</p></div>
+                            <div class="text-right"><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1 italic">Anlık Değer</p><p class="text-xl font-black text-emerald-400">${totalCurrent.toLocaleString('tr-TR')} ₺</p></div>
                             <div class="col-span-2 p-4 liquid-inner rounded-xl flex justify-between items-center mt-2 shadow-inner border border-white/5">
                                 <div><p class="text-[8px] font-black text-slate-500 uppercase italic">Net Birikim Gücü</p><p class="text-lg font-black ${totalPnl >= 0 ? 'text-emerald-400' : 'text-red-500'}">${totalPnl >= 0 ? '+' : ''}${totalPnl.toLocaleString('tr-TR')} ₺</p></div>
-                                <div class="text-right"><p class="text-[8px] font-black text-slate-500 uppercase italic">Performans</p><p class="text-lg font-black ${totalPnl >= 0 ? 'text-emerald-400' : 'text-red-500'} italic">%${totalPnl >= 0 ? '+' : ''}${pnlRate.toFixed(2)}</p></div>
+                                <div class="text-right"><p class="text-[8px] font-black text-slate-500 uppercase italic">Verim</p><p class="text-lg font-black ${totalPnl >= 0 ? 'text-emerald-400' : 'text-red-500'} italic">%${totalPnl >= 0 ? '+' : ''}${pnlRate.toFixed(2)}</p></div>
                             </div>
                         </div>
                     </div>
@@ -526,7 +527,7 @@
             document.getElementById('view-content').innerHTML = `
                 <div class="space-y-8 view-frame">
                     <div class="flex justify-between items-center glass-card p-6 rounded-3xl border border-emerald-500/20 shadow-xl">
-                        <div><h2 class="text-2xl font-black text-emerald-400 uppercase italic tracking-tighter">Varlık Laboratuvarı</h2><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1">Kişisel Fon ve Hisse Pozisyonlarınız</p></div>
+                        <div><h2 class="text-2xl font-black text-emerald-400 uppercase italic tracking-tighter">Varlık Yönetimi</h2><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1">Kişisel Fon ve Hisse Pozisyonlarınız</p></div>
                         <button onclick="openInvestmentModal()" class="px-6 py-3 bg-emerald-600 text-white rounded-xl font-black text-[10px] uppercase shadow-lg border border-white/10 hover:scale-105 transition"><i data-lucide="plus" class="mr-2 inline w-4 h-4"></i>VARLIK EKLE</button>
                     </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="inv-grid"></div>
@@ -538,24 +539,34 @@
                 const pnl = currVal - cost;
                 const isProfit = pnl >= 0;
                 
-                // TradingView Symbol Search logic (Approximate)
-                const tvSymbol = i.asset_type === 'Hisse Senedi' ? `BIST:${i.asset_name}` : (i.asset_type === 'Altın' ? 'FX_IDC:XAUTRY' : i.asset_name);
+                // Rasyonel Grafik Eşleştirme (BIST & Global)
+                let tvSymbol = i.asset_name;
+                if (i.asset_type === 'Hisse Senedi') tvSymbol = `BIST:${i.asset_name}`;
+                else if (i.asset_type === 'Altın') tvSymbol = 'FX_IDC:XAUTRY';
+                else if (i.asset_type === 'Döviz') tvSymbol = `FX_IDC:${i.asset_name}TRY`;
+                else if (i.asset_type === 'Fon') {
+                    // Fonlar için dayanak varlık tahmini
+                    if(i.asset_name.includes("ALTIN") || i.asset_name === "TUA") tvSymbol = 'FX_IDC:XAUTRY';
+                    else if(i.asset_name.includes("BIST") || i.asset_name.includes("HİSSE")) tvSymbol = 'BIST:XU100';
+                    else if(i.asset_name.includes("TEKNOLOJİ")) tvSymbol = 'NASDAQ:IXIC';
+                    else tvSymbol = 'BIST:XU100'; // Default BIST100
+                }
 
                 return `
                     <div class="glass-card p-8 rounded-[2.5rem] border-t-8 ${isProfit?'border-t-emerald-500':'border-t-red-500'} relative group overflow-hidden shadow-xl">
                         <div class="flex justify-between items-start mb-6 relative z-10">
                             <span class="asset-badge">${i.asset_type}</span>
                             <div class="flex gap-2">
-                                <button onclick="window.openMarketChart('${i.asset_name}', '${tvSymbol}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-orange-400 hover:text-white transition shadow-sm" title="Grafiği Gör"><i data-lucide="area-chart" class="w-4 h-4"></i></button>
+                                <button onclick="window.openMarketChart('${i.asset_name}', '${tvSymbol}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-orange-400 hover:text-white transition shadow-sm" title="Sade Grafik"><i data-lucide="area-chart" class="w-4 h-4"></i></button>
                                 <button onclick="window.editInv('${i.id}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-blue-500 transition shadow-sm"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
                                 <button onclick="window.deleteItem('investments', '${i.id}', fetchData)" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-red-500 transition shadow-sm"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
                             </div>
                         </div>
                         <h4 class="text-xl font-black text-white uppercase italic tracking-tighter mb-4 line-clamp-1">${i.asset_name}</h4>
                         <div class="flex justify-between items-end border-t border-white/5 pt-4 relative z-10">
-                            <div><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Piyasa Değeri</p><p class="text-xl font-black text-white">${currVal.toLocaleString('tr-TR')} ₺</p></div>
+                            <div><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Mevcut Değer</p><p class="text-xl font-black text-white">${currVal.toLocaleString('tr-TR')} ₺</p></div>
                             <div class="text-right">
-                                <p class="text-[8px] font-black ${isProfit?'text-emerald-400':'text-red-400'} uppercase tracking-widest mb-1">K/Z</p>
+                                <p class="text-[8px] font-black ${isProfit?'text-emerald-400':'text-red-400'} uppercase tracking-widest mb-1">P/L</p>
                                 <p class="text-base font-black ${isProfit?'text-emerald-400':'text-red-500'}">${isProfit?'+':''}${pnl.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</p>
                             </div>
                         </div>
@@ -564,14 +575,18 @@
             lucide.createIcons();
         }
 
-        // --- MARKET MODULE (SADE GRAFİKLER) ---
+        // --- MARKET MODULE (SADE TÜRKİYE ODAKLI) ---
         function renderMarketUI() {
             document.getElementById('view-content').innerHTML = `
                 <div class="space-y-8 view-frame">
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="market-tickers">
-                        <div class="market-card glass-card p-5 animate__animated animate__fadeIn" onclick="openMarketChart('ALTIN', 'FX_IDC:XAUTRY')">
-                            <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">ALTIN (GR)</span><i class="fa-solid fa-coins text-orange-400"></i></div>
+                        <div class="market-card glass-card p-5 animate__animated animate__fadeIn" onclick="openMarketChart('GRAM ALTIN', 'FX_IDC:XAUTRY')">
+                            <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">ALTIN (TRY)</span><i class="fa-solid fa-coins text-orange-400"></i></div>
                             <h4 id="ticker-gold" class="text-xl font-black text-white font-mono">...</h4>
+                        </div>
+                        <div class="market-card glass-card p-5 animate__animated animate__fadeIn" onclick="openMarketChart('BIST 100', 'BIST:XU100')">
+                            <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">XU100</span><i class="fa-solid fa-arrow-trend-up text-emerald-500"></i></div>
+                            <h4 id="ticker-bist" class="text-xl font-black text-white font-mono">...</h4>
                         </div>
                         <div class="market-card glass-card p-5 animate__animated animate__fadeIn" onclick="openMarketChart('DOLAR', 'FX_IDC:USDTRY')">
                             <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">USD / TRY</span><i class="fa-solid fa-dollar-sign text-emerald-500"></i></div>
@@ -581,14 +596,11 @@
                             <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">EUR / TRY</span><i class="fa-solid fa-euro-sign text-blue-400"></i></div>
                             <h4 id="ticker-eur" class="text-xl font-black text-white font-mono">...</h4>
                         </div>
-                        <div class="market-card glass-card p-5 animate__animated animate__fadeIn" onclick="openMarketChart('GÜMÜŞ', 'FX_IDC:XAGTRY')">
-                            <div class="flex justify-between items-center mb-3"><span class="stat-badge badge-blue">GÜMÜŞ (GR)</span><i class="fa-solid fa-gem text-slate-400"></i></div>
-                            <h4 id="ticker-silver" class="text-xl font-black text-white font-mono">...</h4>
-                        </div>
                     </div>
-                    <div class="glass-card p-8 rounded-[2rem] shadow-2xl relative overflow-hidden text-center min-h-[200px] flex flex-col items-center justify-center">
-                        <h4 class="text-[10px] font-black uppercase text-slate-500 mb-4 italic tracking-widest">Global Piyasalar İzleme</h4>
-                        <p class="text-xs text-slate-400 max-w-sm">Varlık grafiklerini rasyonel olarak incelemek için yukarıdaki kartlara dokunun.</p>
+                    <div class="glass-card p-10 rounded-[3rem] shadow-2xl text-center flex flex-col items-center justify-center min-h-[300px] border border-white/5 relative overflow-hidden">
+                        <h4 class="text-xs font-black uppercase text-slate-500 mb-4 italic tracking-widest">Global & Yerel Piyasa Nabzı</h4>
+                        <p class="text-sm text-slate-400 max-w-md font-medium">Saniye saniye güncellenen Türkiye ve dünya piyasalarını rasyonel olarak takip etmek için yukarıdaki kartlara dokunabilirsiniz.</p>
+                        <i data-lucide="line-chart" class="absolute -bottom-10 -right-10 w-48 h-48 opacity-5 text-blue-500"></i>
                     </div>
                 </div>`;
             startLiveTickerSim();
@@ -598,38 +610,27 @@
             if(marketDataInterval) clearInterval(marketDataInterval);
             marketDataInterval = setInterval(() => {
                 if(document.getElementById('ticker-gold')) document.getElementById('ticker-gold').innerText = (3124 + Math.random()).toFixed(2) + " ₺";
+                if(document.getElementById('ticker-bist')) document.getElementById('ticker-bist').innerText = (10245 + (Math.random()*10)).toFixed(0);
                 if(document.getElementById('ticker-usd')) document.getElementById('ticker-usd').innerText = (32.45 + Math.random()/100).toFixed(4) + " ₺";
                 if(document.getElementById('ticker-eur')) document.getElementById('ticker-eur').innerText = (34.92 + Math.random()/100).toFixed(4) + " ₺";
-                if(document.getElementById('ticker-silver')) document.getElementById('ticker-silver').innerText = (38.12 + Math.random()/100).toFixed(2) + " ₺";
             }, 3000);
         }
 
         window.openMarketChart = (title, symbol) => {
-            document.getElementById('market-chart-title').innerText = title + " Analiz Paneli";
+            document.getElementById('market-chart-title').innerText = title + " Sade Analiz";
             const modal = document.getElementById('market-detail-modal');
             modal.classList.remove('hidden');
             modal.style.display = 'flex';
             
+            // SADELEŞTİRİLMİŞ GRAFİK (TradingView Medium Widget)
             new TradingView.MediumWidget({
                 "symbols": [[title, symbol]],
-                "chartOnly": false,
-                "width": "100%",
-                "height": "100%",
-                "locale": "tr",
-                "colorTheme": "dark",
-                "gridLineColor": "rgba(240, 243, 250, 0)",
-                "fontFamily": "Trebuchet MS, sans-serif",
-                "trendLineColor": "#2962FF",
-                "underLineColor": "rgba(41, 98, 255, 0.08)",
-                "underLineBottomColor": "rgba(41, 98, 255, 0)",
-                "isTransparent": true,
-                "autosize": true,
-                "container_id": "tradingview-container"
+                "chartOnly": false, "width": "100%", "height": "100%", "locale": "tr", "colorTheme": "dark", "gridLineColor": "rgba(240, 243, 250, 0)", "fontFamily": "Trebuchet MS, sans-serif", "trendLineColor": "#2962FF", "underLineColor": "rgba(41, 98, 255, 0.08)", "underLineBottomColor": "rgba(41, 98, 255, 0)", "isTransparent": true, "autosize": true, "container_id": "tradingview-container"
             });
             lucide.createIcons();
         };
 
-        // --- DATA OPS ---
+        // --- SUBMISSION OPS ---
         window.saveTransaction = async (e) => {
             e.preventDefault(); 
             const btn = document.getElementById('save-btn'); 
@@ -637,17 +638,7 @@
             try {
                 const stdVal = document.getElementById('t-student').value; 
                 const isGm = stdVal === 'babaanne';
-                const payload = {
-                    teacher_id: userProfile.id,
-                    student_id: (isGm || !stdVal) ? null : stdVal,
-                    amount: Number(document.getElementById('t-amount').value),
-                    description: document.getElementById('t-desc').value,
-                    type: document.getElementById('t-type').value,
-                    category: document.getElementById('t-category').value,
-                    bank_name: document.getElementById('t-bank').value,
-                    is_grandmother: isGm,
-                    transaction_date: new Date().toISOString()
-                };
+                const payload = { teacher_id: userProfile.id, student_id: (isGm || !stdVal) ? null : stdVal, amount: Number(document.getElementById('t-amount').value), description: document.getElementById('t-desc').value, type: document.getElementById('t-type').value, category: document.getElementById('t-category').value, bank_name: document.getElementById('t-bank').value, is_grandmother: isGm, transaction_date: new Date().toISOString() };
                 const { error } = await supabaseClient.from('transactions').insert([payload]);
                 if(!error) { await fetchData(); window.closeModal('transaction-modal'); navigate('dashboard'); } else throw error;
             } catch(err) { alert("Hata: " + err.message); } finally { btn.disabled = false; btn.innerText = "İŞLEMİ MÜHÜRLE"; }
@@ -665,8 +656,8 @@
 
         window.setType = (type) => {
             document.getElementById('t-type').value = type; const isInc = type === 'income';
-            document.getElementById('btn-inc').className = isInc ? 'py-4 rounded-xl border-2 font-black text-sm uppercase transition bg-blue-600 border-blue-500/30 text-white' : 'py-4 rounded-xl border-2 font-black text-sm uppercase transition border-white/10 opacity-50 text-slate-500';
-            document.getElementById('btn-exp').className = !isInc ? 'py-4 rounded-xl border-2 font-black text-sm uppercase transition bg-red-600 border-red-500/30 text-white' : 'py-4 rounded-xl border-2 font-black text-sm uppercase transition border-white/10 opacity-50 text-slate-500';
+            document.getElementById('btn-inc').className = isInc ? 'py-4 rounded-xl border-2 font-black text-sm uppercase transition bg-blue-600 border-blue-500/30 text-white shadow-lg' : 'py-4 rounded-xl border-2 font-black text-sm uppercase transition border-white/10 opacity-50 text-slate-500';
+            document.getElementById('btn-exp').className = !isInc ? 'py-4 rounded-xl border-2 font-black text-sm uppercase transition bg-red-600 border-red-500/30 text-white shadow-lg' : 'py-4 rounded-xl border-2 font-black text-sm uppercase transition border-white/10 opacity-50 text-slate-500';
             document.getElementById('t-category').innerHTML = (isInc ? incCats : expCats).map(c => `<option value="${c}">${c}</option>`).join('');
         };
 
