@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v7.0</title>
+    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v8.0</title>
     
     <!-- Merkezi Kütüphane Hub'ı -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,7 +27,7 @@
                         'float': 'floating 3s ease-in-out infinite',
                     },
                     keyframes: {
-                        floating: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                        floating: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } }
                     }
                 } 
             }
@@ -54,20 +54,18 @@
         .orb-2 { width: 35vw; height: 35vw; background: #7c2d12; bottom: -10%; right: -10%; }
         @keyframes moveOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 40px) scale(1.2); } }
 
-        /* --- MODERN CAM TASARIMI --- */
+        /* --- MODERN CAM TASARIMI (LIQUID GLASS) --- */
         .glass-card {
-            background: rgba(15, 23, 42, 0.5) !important;
+            background: rgba(15, 23, 42, 0.45) !important;
             backdrop-filter: blur(20px) saturate(180%) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.02) !important;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover { transform: translateY(-4px); border-color: rgba(37, 99, 235, 0.4) !important; box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7); }
         .liquid-inner { background: rgba(0, 0, 0, 0.3) !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; border-radius: 1rem; }
 
-        /* --- SABİT LOGO & MENÜ VURGUSU --- */
-        .logo-fixed { position: fixed; top: 24px; left: 32px; z-index: 2000; filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.4)); pointer-events: auto; }
-        
+        /* --- MENÜ SEÇİM VURGUSU --- */
         .sidebar-link { transition: all 0.3s ease; border-left: 0px solid transparent; }
         .sidebar-link.active { 
             background: linear-gradient(90deg, rgba(37, 99, 235, 0.15) 0%, transparent 100%) !important;
@@ -83,13 +81,15 @@
         .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- SCROLLBAR --- */
+        /* --- ÖZEL İMLEÇ --- */
+        body, html, * { cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l15 6-6.5 2L10 19 4 4z" fill="%232563eb" stroke="%23ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 4, auto !important; }
+        button, a, input, select { cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l15 6-6.5 2L10 19 4 4z" fill="%23ea580c" stroke="%23ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 4, pointer !important; }
+
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(37, 99, 235, 0.3); border-radius: 10px; }
-        
-        /* --- BADGES --- */
-        .asset-badge { font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-        
+
+        .logo-fixed { position: fixed; top: 24px; left: 32px; z-index: 2000; filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.4)); }
+
         @media (max-width: 1024px) {
             .sidebar-fixed { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; flex-direction: row !important; z-index: 2001; background: #020617; border-top: 1px solid rgba(255,255,255,0.1); padding: 5px !important; }
             .sidebar-link span { display: none; }
@@ -104,7 +104,7 @@
     <!-- LOADER -->
     <div id="loading" class="fixed inset-0 z-[5000] bg-darkBg flex flex-col items-center justify-center transition-opacity duration-700">
         <div class="h-16 w-16 border-2 border-slate-800 border-t-blue-600 rounded-full animate-spin"></div>
-        <p class="mt-6 text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 animate-pulse">KASA TERMINALI BAŞLATILIYOR</p>
+        <p class="mt-6 text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 animate-pulse">FINANSAL TERMINAL BAŞLATILIYOR</p>
     </div>
 
     <!-- SABİT LOGO -->
@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <!-- ANA PLATFORM -->
+    <!-- ANA PANEL -->
     <div id="app" class="hidden min-h-screen flex flex-col md:flex-row overflow-hidden relative z-10">
         <!-- Sidebar -->
         <aside class="w-full md:w-72 glass-card border-r border-white/5 flex flex-col h-screen shrink-0 relative z-[1001] sidebar-fixed">
@@ -135,7 +135,7 @@
             <div class="p-6 border-t border-white/5 hidden md:block">
                 <div class="flex items-center gap-3 mb-6 px-2">
                     <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black" id="user-avatar">A</div>
-                    <div class="overflow-hidden"><p class="text-xs font-black truncate" id="user-name-display">...</p><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Yönetici</p></div>
+                    <div class="overflow-hidden"><p class="text-xs font-black truncate" id="user-name-display">Ali Şengül</p><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Yönetici</p></div>
                 </div>
                 <button onclick="logout()" class="w-full py-3 text-red-500 hover:bg-red-500/10 rounded-2xl font-black text-[10px] uppercase transition border border-red-500/10 tracking-widest">Çıkış Yap</button>
             </div>
@@ -173,10 +173,10 @@
                 </div>
                 <input type="hidden" id="t-type" value="income">
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Kategori</label><select id="t-category" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-blue-500"></select></div>
-                    <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Banka</label><select id="t-bank" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-blue-500"><option>Nays</option><option>İş Bankası</option><option>Halkbank</option><option>Garanti BBVA</option><option>YapıKredi</option><option>Nakit / Elden</option></select></div>
+                    <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Kategori</label><select id="t-category" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-blue-500 transition"></select></div>
+                    <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Banka</label><select id="t-bank" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase transition focus:border-blue-500"><option>Nays</option><option>İş Bankası</option><option>Halkbank</option><option>Garanti BBVA</option><option>YapıKredi</option><option>Nakit / Elden</option></select></div>
                 </div>
-                <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Kaynak / Öğrenci</label><select id="t-student" class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold focus:border-blue-500 transition"></select></div>
+                <div><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">İlişkili Kayıt</label><select id="t-student" class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold focus:border-blue-500 transition"></select></div>
                 <div class="grid grid-cols-3 gap-4">
                     <div class="col-span-1"><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Tutar (₺)</label><input type="number" step="0.01" id="t-amount" required class="w-full p-4 rounded-xl liquid-inner text-center font-black text-xl text-white outline-none border border-white/10 focus:border-blue-500"></div>
                     <div class="col-span-2"><label class="text-[10px] font-black uppercase text-slate-500 mb-2 block">Açıklama</label><input type="text" id="t-desc" required class="w-full p-4 rounded-xl liquid-inner text-white outline-none border border-white/10 focus:border-blue-500 transition font-medium"></div>
@@ -194,14 +194,14 @@
             <form id="investment-form" onsubmit="window.saveInvestment(event)" class="space-y-4">
                 <input type="hidden" id="edit-inv-id" value="">
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Varlık Adı (Örn: AFT, THYAO)</label><input type="text" id="inv-name" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-sm font-bold uppercase focus:border-emerald-500"></div>
-                    <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Tür</label><select id="inv-type" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase focus:border-emerald-500"><option>Fon</option><option>Hisse Senedi</option><option>Altın</option><option>Döviz</option><option>Kripto Para</option></select></div>
+                    <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Varlık Adı (Örn: AFT, THYAO)</label><input type="text" id="inv-name" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-sm font-bold uppercase transition focus:border-emerald-500"></div>
+                    <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Tür</label><select id="inv-type" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 text-xs font-bold uppercase transition focus:border-emerald-500"><option>Fon</option><option>Hisse Senedi</option><option>Altın</option><option>Döviz</option><option>Kripto Para</option></select></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Miktar / Adet</label><input type="number" step="0.000001" id="inv-qty" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 font-black text-xl"></div>
                     <div><label class="text-[10px] font-black text-slate-500 uppercase block mb-1">Maliyet (₺)</label><input type="number" step="0.0001" id="inv-cost" required class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-white/10 font-black text-xl"></div>
                 </div>
-                <div><label class="text-[10px] font-black text-blue-500 uppercase block mb-1">Güncel Piyasa Fiyatı (₺)</label><input type="number" step="0.0001" id="inv-current" class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-blue-500/20 font-black text-xl focus:border-blue-500"></div>
+                <div><label class="text-[10px] font-black text-blue-500 uppercase block mb-1">Güncel Piyasa Fiyatı (₺)</label><input type="number" step="0.0001" id="inv-current" class="w-full p-4 rounded-xl liquid-inner outline-none text-white border border-blue-500/20 font-black text-xl focus:border-blue-500" placeholder="0.0000"></div>
                 <button type="submit" id="inv-save-btn" class="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black uppercase shadow-lg hover:brightness-110 tracking-widest border border-white/10">VARLIĞI MÜHÜRLE</button>
             </form>
         </div>
@@ -213,34 +213,39 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let userProfile = null, students = [], transactions = [], investments = [];
-        let assetChart = null;
+        let dashboardAssetChart = null;
 
         const incCats = ['Kurs Ücreti', 'Özel Ders', 'Kitap Satışı', 'Cashback', 'İade', 'Harçlık', 'Babaannemden Gelen', 'Diğer Gelir'];
         const expCats = ['Market', 'Abonelik', 'Fatura', 'Harçlık', 'Online Alışveriş', 'Yemek Harcamaları', 'Kira', 'Elektrik/Su/İnternet', 'Reklam', 'Hizmet/Personel', 'Babaannem İçin', 'Diğer Gider'];
 
-        // CORE UI & AUTH
+        // CORE UI & AUTH MOTORU
+        function hideLoading() { const l = document.getElementById('loading'); if(l) { l.classList.add('opacity-0'); setTimeout(() => l.remove(), 700); } }
         function logout() { localStorage.clear(); supabaseClient.auth.signOut().then(() => location.reload()); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
         function openTransactionModal() { document.getElementById('editing-id').value = ""; document.getElementById('transaction-form').reset(); document.getElementById('transaction-modal').classList.remove('hidden'); document.getElementById('transaction-modal').classList.add('flex'); setType('income'); lucide.createIcons(); }
         function openInvestmentModal() { document.getElementById('edit-inv-id').value = ""; document.getElementById('investment-form').reset(); document.getElementById('investment-modal').classList.remove('hidden'); document.getElementById('investment-modal').classList.add('flex'); lucide.createIcons(); }
 
         async function initAuth() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session) {
-                const { data } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
-                if (data && data.role === 'teacher') {
-                    userProfile = data;
-                    const nameEl = document.getElementById('user-name-display');
-                    if(nameEl) nameEl.innerText = data.full_name;
-                    document.getElementById('app').classList.remove('hidden'); document.getElementById('app').classList.add('flex');
-                    document.getElementById('login-overlay').classList.add('hidden');
-                    renderSidebar(); await fetchData();
-                    navigate(localStorage.getItem('student_last_tab') || 'dashboard');
-                } else { logout(); }
-            } else { document.getElementById('login-overlay').classList.remove('hidden'); document.getElementById('login-overlay').classList.add('flex'); }
-            const loader = document.getElementById('loading');
-            if(loader) { loader.classList.add('opacity-0'); setTimeout(()=>loader.remove(), 700); }
-            lucide.createIcons();
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    const { data } = await supabaseClient.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+                    if (data && data.role === 'teacher') {
+                        userProfile = data;
+                        const nameEl = document.getElementById('user-name-display');
+                        if(nameEl) nameEl.innerText = data.full_name;
+                        document.getElementById('app').classList.remove('hidden'); document.getElementById('app').classList.add('flex');
+                        document.getElementById('login-overlay').classList.add('hidden');
+                        renderSidebar(); await fetchData();
+                        navigate(localStorage.getItem('student_last_tab') || 'dashboard');
+                    } else { logout(); }
+                } else { document.getElementById('login-overlay').classList.remove('hidden'); document.getElementById('login-overlay').classList.add('flex'); }
+            } catch (err) {
+                console.error("Auth System Error:", err);
+                logout();
+            } finally {
+                hideLoading(); lucide.createIcons();
+            }
         }
 
         async function handleLogin(e) {
@@ -282,11 +287,16 @@
             const sInv = document.getElementById('stat-invest-total'); if(sInv) sInv.innerText = investTotal.toLocaleString('tr-TR') + ' ₺';
             const hInv = document.getElementById('header-invest-total'); if(hInv) hInv.innerText = investTotal.toLocaleString('tr-TR') + ' ₺';
             const sBal = document.getElementById('stat-total-balance'); if(sBal) sBal.innerText = totalBal.toLocaleString('tr-TR') + ' ₺';
+            
+            const hScore = document.getElementById('header-score'); if(hScore) hScore.innerText = totalBal.toLocaleString('tr-TR');
         }
 
         function renderSidebar() {
             const items = [{id:'dashboard',n:'Dashboard',i:'layout-dashboard'},{id:'ledger',n:'İşlem Defteri',i:'book-text'},{id:'investments',n:'Yatırımlarım',i:'vault'},{id:'students',n:'Öğrenci Cari',i:'users'},{id:'grandmother',n:'Babaanne',i:'heart'},{id:'reports',n:'Analiz',i:'pie-chart'}];
-            document.getElementById('sidebar-nav').innerHTML = items.map(x => `<button onclick="navigate('${x.id}')" id="nav-${x.id}" class="sidebar-link w-full flex items-center space-x-5 px-8 py-5 rounded-[2.2rem] font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5 group"><i data-lucide="${x.i}" class="w-5 h-5"></i><span>${x.n}</span></button>`).join('');
+            document.getElementById('sidebar-nav').innerHTML = items.map(x => `
+                <button onclick="navigate('${x.id}')" id="nav-${x.id}" class="sidebar-link w-full flex items-center space-x-5 px-8 py-5 rounded-[2.2rem] font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5 group">
+                    <i data-lucide="${x.i}" class="w-5 h-5"></i><span>${x.n}</span>
+                </button>`).join('');
             lucide.createIcons();
         }
 
@@ -390,13 +400,13 @@
             document.getElementById('inv-grid').innerHTML = investments.map(i => {
                 const totalCost = Number(i.quantity) * Number(i.average_cost);
                 const currentVal = Number(i.quantity) * (Number(i.current_price) > 0 ? Number(i.current_price) : Number(i.average_cost));
-                const pnl = currentVal - totalCost; const pnlRate = ((currentVal / totalCost) - 1) * 100;
+                const pnl = currentVal - totalCost; const pnlRate = totalCost > 0 ? ((currentVal / totalCost) - 1) * 100 : 0;
                 const isProfit = pnl >= 0;
                 return `
                     <div class="glass-card p-10 rounded-[4rem] border-t-8 ${isProfit?'border-t-emerald-500':'border-t-red-500'} relative overflow-hidden group">
                         <div class="flex justify-between items-start mb-10"><span class="asset-badge">${i.asset_type}</span><div class="flex gap-2"><button onclick="editInv('${i.id}')" class="text-slate-700 hover:text-blue-500"><i class="fa-solid fa-pen-to-square"></i></button></div></div>
                         <h4 class="text-3xl font-black text-white italic uppercase tracking-tighter mb-4 drop-shadow-lg">${i.asset_name}</h4>
-                        <div class="flex justify-between items-end border-t border-white/5 pt-8">
+                        <div class="flex justify-between items-end border-t border-white/5 pt-8 relative z-10">
                             <div><p class="text-[9px] font-black text-slate-500 uppercase">Mevcut Büyüklük</p><p class="text-2xl font-black text-white">${currentVal.toLocaleString('tr-TR')} ₺</p></div>
                             <div class="text-right">
                                 <p class="text-[9px] font-black text-slate-500 uppercase">Kar / Zarar</p>
@@ -429,15 +439,18 @@
 
         window.editInv = (id) => { 
             const i = investments.find(x=>x.id===id); if(!i) return; 
-            document.getElementById('edit-inv-id').value = id; document.getElementById('inv-name').value = i.asset_name; 
-            document.getElementById('inv-type').value = i.asset_type; document.getElementById('inv-qty').value = i.quantity; 
-            document.getElementById('inv-cost').value = i.average_cost; document.getElementById('inv-current').value = i.current_price; 
-            document.getElementById('investment-modal').classList.remove('hidden'); document.getElementById('investment-modal').classList.add('flex');
+            document.getElementById('edit-inv-id').value = id; 
+            document.getElementById('inv-name').value = i.asset_name; 
+            document.getElementById('inv-type').value = i.asset_type; 
+            document.getElementById('inv-qty').value = i.quantity; 
+            document.getElementById('inv-cost').value = i.average_cost; 
+            document.getElementById('inv-current').value = i.current_price || 0; 
+            document.getElementById('investment-modal').classList.remove('hidden'); 
+            document.getElementById('investment-modal').classList.add('flex');
         };
 
-        window.deleteInv = async (id) => { if(confirm("Onaylıyor musun Ali Hoca?")) { await supabaseClient.from('investments').delete().eq('id', id); await fetchData(); navigate('investments'); } };
+        window.deleteInv = async (id) => { if(confirm("Bu varlık kaydı silinecektir. Onaylıyor musunuz Ali Hoca?")) { await supabaseClient.from('investments').delete().eq('id', id); await fetchData(); navigate('investments'); } };
 
-        // --- DİĞER MODÜLLER ---
         window.saveTransaction = async (e) => {
             e.preventDefault(); const btn = document.getElementById('save-btn'); const editId = document.getElementById('editing-id').value;
             const stdVal = document.getElementById('t-student').value; const isGm = stdVal === 'babaanne';
@@ -489,9 +502,10 @@
             new Chart(document.getElementById('bankPieChart'), { type: 'doughnut', data: { labels: Object.keys(bankData), datasets: [{ data: Object.values(bankData), backgroundColor: ['#2563eb','#10b981','#8b5cf6','#ea580c','#ef4444'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false } });
         };
 
-        window.deleteItem = async (tbl, id, cb) => { if(confirm("Onaylıyor musun Ali Hoca?")) { await supabaseClient.from(tbl).delete().eq('id', id); cb(); } };
+        window.deleteItem = async (tbl, id, cb) => { if(confirm("Bu işlem geri alınamaz. Onaylıyor musun Ali Hoca?")) { await supabaseClient.from(tbl).delete().eq('id', id); cb(); } };
 
         window.onload = initAuth;
+        document.getElementById('login-form').onsubmit = handleLogin;
     </script>
 </body>
 </html>
