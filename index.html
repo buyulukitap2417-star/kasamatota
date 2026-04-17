@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v9.5</title>
+    <title>MATOTA Kasa Pro | Finansal Komuta Merkezi v9.5 Elite</title>
     
+    <!-- 
+        MATOTA KASA PRO - MÜHÜRLENMİŞ FİNANSAL SİSTEM
+        Author: Ali Şengül & MATOTA R&D
+        Version: 9.5 (Investment & Fund Edition)
+        Architecture: Single File Application (HTML/JS/Tailwind)
+    -->
+
     <!-- Merkezi Kütüphane Hub'ı -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
     <script>
@@ -20,7 +28,13 @@
                     colors: { 
                         darkBg: '#020617', 
                         darkCard: '#0f172a', 
-                        brand: { blue: '#2563eb', orange: '#ea580c', purple: '#8b5cf6', emerald: '#10b981', red: '#ef4444' } 
+                        brand: { 
+                            blue: '#2563eb', 
+                            orange: '#ea580c', 
+                            purple: '#8b5cf6', 
+                            emerald: '#10b981', 
+                            red: '#ef4444' 
+                        } 
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -49,6 +63,7 @@
         }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        /* Arka Plan Ambiansı */
         .ambient-orb { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.12; animation: moveOrb 25s infinite alternate ease-in-out; pointer-events: none; }
         .orb-1 { width: 45vw; height: 45vw; background: #1d4ed8; top: -10%; left: -10%; }
         .orb-2 { width: 35vw; height: 35vw; background: #7c2d12; bottom: -10%; right: -10%; }
@@ -87,9 +102,11 @@
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(37, 99, 235, 0.3); border-radius: 10px; }
         
+        /* --- BADGES & HELP --- */
         .asset-badge { font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .asset-help { font-size: 10px; color: #64748b; font-weight: 600; margin-top: 4px; line-height: 1.4; }
+        
         .logo-fixed { position: fixed; top: 20px; left: 32px; z-index: 2000; filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.4)); pointer-events: auto; }
-        .asset-help { font-size: 10px; color: #64748b; font-weight: 600; margin-top: 4px; }
 
         @media (max-width: 1024px) {
             .sidebar-fixed { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; flex-direction: row !important; z-index: 2001; background: #020617; border-top: 1px solid rgba(255,255,255,0.1); padding: 5px !important; }
@@ -103,10 +120,10 @@
 <body class="dark overflow-hidden">
     <div class="ambient-orb orb-1"></div><div class="ambient-orb orb-2"></div>
 
-    <!-- YÜKLEME EKRANI -->
+    <!-- LOADER (BİLİMSEL) -->
     <div id="loading" class="fixed inset-0 z-[5000] bg-darkBg flex flex-col items-center justify-center transition-opacity duration-700">
         <div class="h-12 w-12 border-2 border-slate-800 border-t-blue-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-[9px] font-black uppercase tracking-[0.4em] text-blue-500 animate-pulse text-center">KOMUTA MERKEZİ Senkronize Ediliyor</p>
+        <p class="mt-4 text-[9px] font-black uppercase tracking-[0.4em] text-blue-500 animate-pulse text-center">BİLİMSEL VERİ Terminali Senkronize Ediliyor</p>
     </div>
 
     <!-- SABİT LOGO -->
@@ -138,13 +155,13 @@
                     <i data-lucide="layout-dashboard"></i><span>Kokpit</span>
                 </button>
                 <button onclick="navigate('ledger')" id="nav-ledger" class="sidebar-link w-full flex items-center space-x-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5">
-                    <i data-lucide="book-text"></i><span>Defter</span>
+                    <i data-lucide="book-text"></i><span>İşlem Defteri</span>
                 </button>
                 <button onclick="navigate('investments')" id="nav-investments" class="sidebar-link w-full flex items-center space-x-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5 text-emerald-400">
-                    <i data-lucide="vault"></i><span>Yatırımlar</span>
+                    <i data-lucide="vault"></i><span>Yatırımlarım</span>
                 </button>
                 <button onclick="navigate('students')" id="nav-students" class="sidebar-link w-full flex items-center space-x-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5">
-                    <i data-lucide="users"></i><span>Cari</span>
+                    <i data-lucide="users"></i><span>Öğrenci Cari</span>
                 </button>
                 <button onclick="navigate('grandmother')" id="nav-grandmother" class="sidebar-link w-full flex items-center space-x-4 px-5 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest transition hover:bg-white/5 text-purple-400">
                     <i data-lucide="heart"></i><span>Babaanne</span>
@@ -158,7 +175,7 @@
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black" id="user-avatar">A</div>
                     <div class="overflow-hidden"><p class="text-xs font-black truncate text-white" id="user-name-display">...</p></div>
                 </div>
-                <button onclick="logout()" class="w-full py-2.5 text-red-500 hover:bg-red-500/10 rounded-xl font-black text-[9px] uppercase transition border border-red-500/10 tracking-widest">Çıkış Yap</button>
+                <button onclick="logout()" class="w-full py-2.5 text-red-500 hover:bg-red-500/10 rounded-xl font-black text-[9px] uppercase transition border border-red-500/10">Oturumu Kapat</button>
             </div>
         </aside>
 
@@ -170,12 +187,12 @@
                     <p class="text-[9px] font-bold text-slate-500 uppercase tracking-[0.4em] mt-1 italic" id="page-subtitle">Rasyonel Kasa terminali</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="px-4 py-2 liquid-inner border border-white/10 rounded-xl font-black text-[10px] text-emerald-400 hidden sm:flex flex-col items-center">
-                        <span class="opacity-50 text-[7px] uppercase tracking-widest">Anlık Varlık Gücü</span>
+                    <div class="px-4 py-2 liquid-inner border border-white/10 rounded-xl font-black text-[10px] text-emerald-400 hidden sm:flex flex-col items-center shadow-lg">
+                        <span class="opacity-50 text-[7px] uppercase tracking-widest">Portföy Büyüklüğü</span>
                         <span id="header-invest-total" class="text-white text-base">0 ₺</span>
                     </div>
                     <button onclick="openTransactionModal()" class="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-black text-[10px] uppercase shadow-lg hover:scale-105 transition-all border border-white/10">
-                        <i data-lucide="plus" class="w-3 h-3 mr-1 inline"></i>İŞLEM
+                        <i data-lucide="plus" class="w-3 h-3 mr-1 inline"></i>KAYIT
                     </button>
                 </div>
             </header>
@@ -183,11 +200,13 @@
         </main>
     </div>
 
-    <!-- MODALLAR -->
+    <!-- MODAL HUB -->
+    
+    <!-- İşlem Giriş / Düzenleme -->
     <div id="transaction-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl hidden items-center justify-center p-4 z-[9999]">
         <div class="max-w-xl w-full glass-card p-8 rounded-[2.5rem] shadow-2xl relative border border-white/15 animate__animated animate__zoomIn animate__faster">
             <button onclick="closeModal('transaction-modal')" class="absolute top-6 right-6 text-slate-500 hover:text-white transition"><i data-lucide="x"></i></button>
-            <h3 class="text-xl font-black uppercase text-blue-500 mb-8 text-center">İşlem Girişi</h3>
+            <h3 class="text-xl font-black uppercase text-blue-500 mb-8 text-center">İşlem Mühürleme</h3>
             <form id="transaction-form" onsubmit="window.saveTransaction(event)" class="space-y-4">
                 <input type="hidden" id="editing-id" value="">
                 <div class="grid grid-cols-2 gap-3">
@@ -197,22 +216,23 @@
                 <input type="hidden" id="t-type" value="income">
                 <div class="grid grid-cols-2 gap-4">
                     <div><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Kategori</label><select id="t-category" required class="w-full p-3 rounded-lg liquid-inner outline-none text-white border border-white/10 text-[11px] font-bold uppercase focus:border-blue-500 transition"></select></div>
-                    <div><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Banka</label><select id="t-bank" required class="w-full p-3 rounded-lg liquid-inner outline-none text-white border border-white/10 text-[11px] font-bold uppercase transition focus:border-blue-500"><option>Nays</option><option>İş Bankası</option><option>Halkbank</option><option>Garanti BBVA</option><option>YapıKredi</option><option>Nakit / Elden</option></select></div>
+                    <div><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Banka Hub</label><select id="t-bank" required class="w-full p-3 rounded-lg liquid-inner outline-none text-white border border-white/10 text-[11px] font-bold uppercase transition focus:border-blue-500"><option>Nays</option><option>İş Bankası</option><option>Halkbank</option><option>Garanti BBVA</option><option>YapıKredi</option><option>Nakit / Elden</option></select></div>
                 </div>
                 <div><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Kayıt Sahibi</label><select id="t-student" class="w-full p-3 rounded-lg liquid-inner outline-none text-white border border-white/10 text-[11px] font-bold transition shadow-inner"></select></div>
                 <div class="grid grid-cols-3 gap-4">
                     <div class="col-span-1"><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Tutar</label><input type="number" step="0.01" id="t-amount" required class="w-full p-3 rounded-lg liquid-inner text-center font-black text-lg text-white outline-none border border-white/10 focus:border-blue-500"></div>
                     <div class="col-span-2"><label class="text-[9px] font-black uppercase text-slate-500 mb-1.5 block">Açıklama</label><input type="text" id="t-desc" required class="w-full p-3 rounded-lg liquid-inner text-white outline-none border border-white/10 focus:border-blue-500 text-xs font-medium"></div>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase shadow-lg text-[11px] tracking-widest border border-white/10">MÜHÜRLE</button>
+                <button type="submit" id="save-btn" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase shadow-lg text-[11px] tracking-widest border border-white/10">MÜHÜRLE</button>
             </form>
         </div>
     </div>
 
+    <!-- Yatırım & Fon Giriş Modalı -->
     <div id="investment-modal" class="fixed inset-0 bg-slate-950/98 backdrop-blur-xl hidden items-center justify-center p-4 z-[9999]">
         <div class="max-w-xl w-full glass-card p-10 rounded-[3rem] shadow-2xl relative border border-white/15 animate__animated animate__zoomIn">
             <button onclick="closeModal('investment-modal')" class="absolute top-6 right-6 text-slate-500 hover:text-white transition"><i data-lucide="x"></i></button>
-            <h3 class="text-xl font-black uppercase text-emerald-500 mb-8 text-center italic tracking-tighter">Varlık & Fon Kaydı</h3>
+            <h3 class="text-xl font-black uppercase text-emerald-500 mb-8 text-center italic tracking-tighter">Fon & Varlık Kaydı</h3>
             <form id="investment-form" onsubmit="window.saveInvestment(event)" class="space-y-4">
                 <input type="hidden" id="edit-inv-id" value="">
                 <div class="grid grid-cols-2 gap-4">
@@ -249,6 +269,9 @@
     </div>
 
     <script>
+        // ==========================================
+        // PLATFORM CORE JS
+        // ==========================================
         const SUPABASE_URL = "https://tnhofdyonpbmozqzimzj.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_xVFfpA85IjnCqIjEJWvtvQ_VZCH_n60"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -259,7 +282,7 @@
         const incCats = ['Kurs Ücreti', 'Özel Ders', 'Kitap Satışı', 'Cashback', 'İade', 'Harçlık', 'Babaannemden Gelen', 'Diğer Gelir'];
         const expCats = ['Market', 'Abonelik', 'Fatura', 'Harçlık', 'Online Alışveriş', 'Yemek Harcamaları', 'Kira', 'Elektrik/Su/İnternet', 'Reklam', 'Hizmet/Personel', 'Babaannem İçin', 'Diğer Gider'];
 
-        // CORE UI & AUTH
+        // UI & AUTH ENGINE
         function logout() { localStorage.clear(); supabaseClient.auth.signOut().then(() => location.reload()); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
         function openTransactionModal() { document.getElementById('editing-id').value = ""; document.getElementById('transaction-form').reset(); document.getElementById('transaction-modal').classList.remove('hidden'); document.getElementById('transaction-modal').classList.add('flex'); setType('income'); lucide.createIcons(); }
@@ -279,7 +302,7 @@
                         await fetchData(); navigate(localStorage.getItem('student_last_tab') || 'dashboard');
                     } else { logout(); }
                 } else { document.getElementById('login-overlay').classList.remove('hidden'); document.getElementById('login-overlay').classList.add('flex'); }
-            } catch (err) { console.error(err); logout(); } finally {
+            } catch (err) { console.error("InitAuth Error:", err); logout(); } finally {
                 const loader = document.getElementById('loading');
                 if(loader) { loader.classList.add('opacity-0'); setTimeout(() => loader.remove(), 700); }
                 lucide.createIcons();
@@ -289,20 +312,23 @@
         async function handleLogin(e) {
             e.preventDefault(); const btn = e.target.querySelector('button'); btn.disabled = true; btn.innerText = "DOGRULANIYOR...";
             const { error } = await supabaseClient.auth.signInWithPassword({ email: document.getElementById('login-email').value, password: document.getElementById('login-password').value });
-            if (error) { document.getElementById('login-error').innerText = error.message; document.getElementById('login-error').classList.remove('hidden'); btn.disabled = false; btn.innerText = "Sisteme Gir"; } 
+            if (error) { document.getElementById('login-error').innerText = "HATA: " + error.message; document.getElementById('login-error').classList.remove('hidden'); btn.disabled = false; btn.innerText = "Sisteme Gir"; } 
             else { location.reload(); }
         }
 
         async function fetchData() {
-            const [ {data: s}, {data: t}, {data: inv} ] = await Promise.all([
-                supabaseClient.from('profiles').select('*').eq('role', 'student').order('full_name'),
-                supabaseClient.from('transactions').select('*, profiles!transactions_student_id_fkey(full_name)').order('transaction_date', {ascending: false}),
-                supabaseClient.from('investments').select('*').order('asset_name')
-            ]);
-            students = s || []; transactions = t || []; investments = inv || [];
-            const stSel = document.getElementById('t-student');
-            if (stSel) stSel.innerHTML = '<option value="">Şahsi İşlem</option><option value="babaanne">BABAANNE (Özel)</option>' + students.map(st => `<option value="${st.id}">${st.full_name}</option>`).join('');
-            updateStats();
+            try {
+                const [ {data: s}, {data: t}, {data: inv} ] = await Promise.all([
+                    supabaseClient.from('profiles').select('*').eq('role', 'student').order('full_name'),
+                    supabaseClient.from('transactions').select('*, profiles!transactions_student_id_fkey(full_name)').order('transaction_date', {ascending: false}),
+                    supabaseClient.from('investments').select('*').order('asset_name')
+                ]);
+                students = s || []; transactions = t || []; investments = inv || [];
+                
+                const stSel = document.getElementById('t-student');
+                if (stSel) stSel.innerHTML = '<option value="">Şahsi İşlem</option><option value="babaanne">BABAANNE (Özel)</option>' + students.map(st => `<option value="${st.id}">${st.full_name}</option>`).join('');
+                updateStats();
+            } catch(err) { console.error("FetchData Error:", err); }
         }
 
         function updateStats() {
@@ -332,13 +358,13 @@
             }, 50);
         }
 
+        // --- DASHBOARD UI ---
         function renderDashboardUI() {
             const personal = transactions.filter(t => !t.is_grandmother);
             const totalBal = personal.reduce((acc, curr) => curr.type === 'income' ? acc + Number(curr.amount) : acc - Number(curr.amount), 0);
             const mInc = personal.filter(t => t.type === 'income' && new Date(t.transaction_date).getMonth() === new Date().getMonth()).reduce((a, b) => a + Number(b.amount), 0);
             const mExp = personal.filter(t => t.type === 'expense' && new Date(t.transaction_date).getMonth() === new Date().getMonth()).reduce((a, b) => a + Number(b.amount), 0);
             
-            // Fon Performansı Dashboard Özeti
             let totalCost = 0, totalCurrent = 0;
             investments.forEach(i => {
                 totalCost += Number(i.quantity) * Number(i.average_cost);
@@ -355,20 +381,13 @@
                             <h2 class="text-7xl font-black italic drop-shadow-2xl">${totalBal.toLocaleString('tr-TR')} ₺</h2>
                         </div>
                         <div class="grid grid-cols-2 gap-6">
-                             <div class="glass-card p-8 rounded-3xl border-l-4 border-l-green-500">
-                                <p class="text-[9px] font-black uppercase text-slate-500 mb-1">Aylık Gelir</p>
-                                <p class="text-xl font-black text-green-500">${mInc.toLocaleString('tr-TR')} ₺</p>
-                             </div>
-                             <div class="glass-card p-8 rounded-3xl border-l-4 border-l-red-500">
-                                <p class="text-[9px] font-black uppercase text-slate-500 mb-1">Aylık Gider</p>
-                                <p class="text-xl font-black text-red-500">${mExp.toLocaleString('tr-TR')} ₺</p>
-                             </div>
+                             <div class="glass-card p-8 rounded-3xl border-l-4 border-l-green-500"><p class="text-[9px] font-black uppercase text-slate-500 mb-1">Gelir (Ay)</p><p class="text-xl font-black text-green-500">${mInc.toLocaleString('tr-TR')} ₺</p></div>
+                             <div class="glass-card p-8 rounded-3xl border-l-4 border-l-red-500"><p class="text-[9px] font-black uppercase text-slate-500 mb-1">Gider (Ay)</p><p class="text-xl font-black text-red-500">${mExp.toLocaleString('tr-TR')} ₺</p></div>
                         </div>
                     </div>
                     
-                    <!-- ANLIK FON DURUM PANELİ -->
                     <div class="glass-card p-8 rounded-[2.5rem] flex flex-col shadow-2xl border-l-8 ${totalPnl >= 0 ? 'border-l-emerald-500' : 'border-l-red-500'}">
-                        <h4 class="font-black uppercase text-[10px] text-slate-500 mb-6 border-b border-white/5 pb-2 italic flex justify-between">Anlık Fon & Varlık Performansı <i data-lucide="trending-up" class="w-4"></i></h4>
+                        <h4 class="font-black uppercase text-[10px] text-slate-500 mb-6 border-b border-white/5 pb-2 italic flex justify-between">Anlık Fon & Varlık Özeti <i data-lucide="trending-up" class="w-4 text-emerald-400"></i></h4>
                         <div class="grid grid-cols-2 gap-4 flex-1">
                             <div class="flex flex-col justify-center">
                                 <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Toplam Maliyet</p>
@@ -378,9 +397,9 @@
                                 <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Piyasa Değeri</p>
                                 <p class="text-2xl font-black text-emerald-400">${totalCurrent.toLocaleString('tr-TR')} ₺</p>
                             </div>
-                            <div class="col-span-2 p-4 liquid-inner rounded-2xl flex justify-between items-center mt-2">
+                            <div class="col-span-2 p-5 liquid-inner rounded-2xl flex justify-between items-center mt-2 shadow-inner border border-white/5">
                                 <div>
-                                    <p class="text-[9px] font-black text-slate-500 uppercase">Net Kâr / Zarar</p>
+                                    <p class="text-[9px] font-black text-slate-500 uppercase italic">Net Birikim Gücü</p>
                                     <p class="text-xl font-black ${totalPnl >= 0 ? 'text-emerald-400' : 'text-red-500'}">${totalPnl >= 0 ? '+' : ''}${totalPnl.toLocaleString('tr-TR')} ₺</p>
                                 </div>
                                 <div class="text-right">
@@ -394,11 +413,12 @@
             updateStats();
         }
 
+        // --- INVESTMENTS MODÜLÜ ---
         function renderInvestmentsUI() {
             document.getElementById('view-content').innerHTML = `
                 <div class="space-y-10 view-frame">
                     <div class="flex justify-between items-center glass-card p-8 rounded-[2.5rem] border border-emerald-500/20 shadow-2xl">
-                        <div><h2 class="text-2xl font-black text-emerald-400 uppercase italic tracking-tighter">Varlık Yönetimi</h2><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1">Fon, Hisse, Altın ve Döviz Pozisyonları</p></div>
+                        <div><h2 class="text-2xl font-black text-emerald-400 uppercase italic tracking-tighter">Varlık Laboratuvarı</h2><p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1">Fon, Hisse, Altın ve Döviz Pozisyonları</p></div>
                         <button onclick="openInvestmentModal()" class="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black text-[10px] uppercase shadow-2xl border border-white/10 hover:scale-105 transition"><i data-lucide="plus" class="mr-2 inline"></i>VARLIK EKLE</button>
                     </div>
                     <div class="grid md:grid-cols-3 gap-8" id="inv-grid"></div>
@@ -421,15 +441,15 @@
                         <div class="flex justify-between items-start mb-8 relative z-10">
                             <span class="asset-badge">${i.asset_type}</span>
                             <div class="flex gap-2">
-                                <button onclick="window.editInv('${i.id}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-blue-500 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                                <button onclick="window.deleteInv('${i.id}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-red-500 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                <button onclick="window.editInv('${i.id}')" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-blue-500 transition-colors shadow-md"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <button onclick="window.deleteItem('investments', '${i.id}', fetchData)" class="w-8 h-8 rounded-lg liquid-inner flex items-center justify-center text-slate-500 hover:text-red-500 transition-colors shadow-md"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                         </div>
                         <h4 class="text-2xl font-black text-white italic uppercase tracking-tighter mb-6">${i.asset_name}</h4>
                         <div class="flex justify-between items-end border-t border-white/5 pt-6 relative z-10">
                             <div><p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Mevcut Değer</p><p class="text-2xl font-black text-white">${currentVal.toLocaleString('tr-TR')} ₺</p></div>
                             <div class="text-right">
-                                <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-1">Kâr/Zarar</p>
+                                <p class="text-[8px] font-black ${isProfit ? 'text-emerald-400' : 'text-red-400'} uppercase tracking-widest mb-1">Kâr/Zarar</p>
                                 <p class="text-base font-black ${isProfit?'text-emerald-400':'text-red-500'}">${isProfit?'+':''}${pnl.toLocaleString('tr-TR', { maximumFractionDigits: 2 })} ₺</p>
                                 <span class="text-[9px] font-black ${isProfit?'text-emerald-400':'text-red-500'} opacity-70">(${isProfit?'+':''}${pnlRate.toFixed(2)}%)</span>
                             </div>
@@ -444,7 +464,7 @@
                     <td class="p-6 text-center font-mono text-slate-300 font-bold">${i.quantity}</td>
                     <td class="p-6 text-center font-mono text-slate-300 font-bold">${Number(i.average_cost).toLocaleString('tr-TR')} ₺</td>
                     <td class="p-6 text-right font-black ${ (Number(i.current_price)-Number(i.average_cost)) >= 0 ? 'text-emerald-400' : 'text-red-500' } text-base">${Number(i.current_price || i.average_cost).toLocaleString('tr-TR')} ₺</td>
-                    <td class="p-6 text-right"><button onclick="window.deleteInv('${i.id}')" class="text-red-500/20 hover:text-red-500 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
+                    <td class="p-6 text-right"><button onclick="window.deleteItem('investments', '${i.id}', fetchData)" class="text-red-500/20 hover:text-red-500 transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
                 </tr>`).join('');
             lucide.createIcons();
         }
@@ -473,14 +493,12 @@
             lucide.createIcons();
         };
 
-        window.deleteInv = async (id) => { if(confirm("Bu mühürü kırmak istediğine emin misin Ali Hoca?")) { const { error } = await supabaseClient.from('investments').delete().eq('id', id); if(!error) { await fetchData(); navigate('investments'); } else alert(error.message); } };
-
         // --- DİĞER MODÜLLER ---
         function renderLedgerUI() {
             document.getElementById('view-content').innerHTML = `
                 <div class="space-y-6 view-frame">
                     <div class="glass-card p-5 rounded-2xl flex items-center shadow-xl border border-white/5"><i data-lucide="search" class="text-slate-500 w-5 h-5 mr-4"></i><input type="text" id="ledger-search-input" placeholder="İşlemlerde ara..." class="w-full bg-transparent outline-none text-white font-bold text-sm" oninput="window.runLedgerFilter()"></div>
-                    <div class="glass-card rounded-[2.5rem] overflow-hidden">
+                    <div class="glass-card rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/5">
                         <table class="w-full text-left"><thead class="bg-black/30 text-[9px] font-black uppercase text-slate-500 border-b border-white/10"><tr><th class="p-6">Tarih</th><th class="p-6">Kayıt</th><th class="p-6 text-right">Tutar</th><th class="p-6 text-right">#</th></tr></thead><tbody id="ledger-table-body" class="text-xs font-bold text-slate-300"></tbody></table>
                     </div>
                 </div>`;
@@ -490,7 +508,7 @@
         window.runLedgerFilter = () => {
             const q = document.getElementById('ledger-search-input').value.toLowerCase();
             document.getElementById('ledger-table-body').innerHTML = transactions.filter(t => !t.is_grandmother && (t.description.toLowerCase().includes(q) || t.category.toLowerCase().includes(q))).map(t => `
-                <tr class="border-b border-white/5 hover:bg-white/5 transition group"><td class="p-6 text-slate-500 font-bold uppercase text-[9px]">${new Date(t.transaction_date).toLocaleDateString('tr-TR')}</td><td class="p-6 font-black uppercase text-slate-200 text-xs">${t.profiles?.full_name || 'Şahsi Kayıt'} <br><span class="opacity-40 text-[9px] italic">${t.category}</span></td><td class="p-6 text-right font-black ${t.type==='income'?'text-green-500':'text-red-500'} text-base">${t.type==='income'?'+':'-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</td><td class="p-6 text-right"><button onclick="window.deleteItem('transactions', '${t.id}', window.fetchData)" class="opacity-0 group-hover:opacity-100 transition text-red-500/30 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button></td></tr>`).join('');
+                <tr class="border-b border-white/5 hover:bg-white/5 transition group"><td class="p-6 text-slate-500 font-bold uppercase text-[9px]">${new Date(t.transaction_date).toLocaleDateString('tr-TR')}</td><td class="p-6 font-black uppercase text-slate-200 text-xs">${t.profiles?.full_name || 'Şahsi Kayıt'} <br><span class="opacity-40 text-[9px] italic">${t.category}</span></td><td class="p-6 text-right font-black ${t.type==='income'?'text-green-500':'text-red-500'} text-base">${t.type==='income'?'+':'-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</td><td class="p-6 text-right"><button onclick="window.deleteItem('transactions', '${t.id}', window.fetchData)" class="opacity-0 group-hover:opacity-100 transition text-red-500/30 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('');
             lucide.createIcons();
         };
 
@@ -498,15 +516,7 @@
             const list = transactions.filter(t => t.is_grandmother);
             const inc = list.filter(t=>t.type==='income').reduce((a,b)=>a+Number(b.amount),0);
             const exp = list.filter(t=>t.type==='expense').reduce((a,b)=>a+Number(b.amount),0);
-            document.getElementById('view-content').innerHTML = `
-                <div class="space-y-8 view-frame">
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-purple-500 shadow-2xl relative overflow-hidden group"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Ondan Gelen</p><p class="text-4xl font-black text-purple-400 drop-shadow-lg">${inc.toLocaleString('tr-TR')} ₺</p></div>
-                        <div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-pink-500 shadow-2xl"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Ona Giden</p><p class="text-4xl font-black text-pink-500 drop-shadow-lg">${exp.toLocaleString('tr-TR')} ₺</p></div>
-                        <div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-white/20 shadow-2xl"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Kasa Durumu</p><p class="text-4xl font-black text-white drop-shadow-lg">${(inc - exp).toLocaleString('tr-TR')} ₺</p></div>
-                    </div>
-                    <div class="space-y-3 max-w-4xl mx-auto">${list.map(t => `<div class="p-6 liquid-inner border border-white/10 flex justify-between items-center rounded-2xl transition hover:shadow-xl group shadow-md"><div><p class="font-black text-white text-base uppercase drop-shadow-md italic">${t.description}</p><p class="text-[9px] text-slate-600 font-bold uppercase mt-1 tracking-widest">${new Date(t.transaction_date).toLocaleDateString('tr-TR')} • ${t.bank_name}</p></div><div class="flex items-center gap-6"><p class="text-xl font-black ${t.type==='income'?'text-green-500':'text-red-500'}">${t.type==='income'?'+':'-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</p><button onclick="window.deleteItem('transactions', '${t.id}', window.fetchData)" class="opacity-0 group-hover:opacity-100 transition text-red-500/20 hover:text-red-500"><i class="fa-solid fa-trash-alt"></i></button></div></div>`).join('') || '<p class="text-center opacity-30 italic py-16 font-black uppercase text-[10px]">Kayıt bulunmuyor.</p>'}</div>
-                </div>`;
+            document.getElementById('view-content').innerHTML = `<div class="space-y-8 view-frame"><div class="grid md:grid-cols-3 gap-6"><div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-purple-500 shadow-2xl relative overflow-hidden group"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Ondan Gelen</p><p class="text-4xl font-black text-purple-400 drop-shadow-lg">${inc.toLocaleString('tr-TR')} ₺</p></div><div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-pink-500 shadow-2xl"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Ona Giden</p><p class="text-4xl font-black text-pink-500 drop-shadow-lg">${exp.toLocaleString('tr-TR')} ₺</p></div><div class="glass-card p-10 rounded-[3rem] text-center border-l-8 border-l-white/20 shadow-2xl"><p class="text-[10px] font-black text-slate-500 mb-2 uppercase tracking-[0.3em]">Kasa Durumu</p><p class="text-4xl font-black text-white drop-shadow-lg">${(inc - exp).toLocaleString('tr-TR')} ₺</p></div></div><div class="space-y-3 max-w-4xl mx-auto">${list.map(t => `<div class="p-6 liquid-inner border border-white/10 flex justify-between items-center rounded-2xl transition hover:shadow-xl group shadow-md"><div><p class="font-black text-white text-base uppercase drop-shadow-md italic">${t.description}</p><p class="text-[9px] text-slate-600 font-bold uppercase mt-1 tracking-widest">${new Date(t.transaction_date).toLocaleDateString('tr-TR')} • ${t.bank_name}</p></div><div class="flex items-center gap-6"><p class="text-xl font-black ${t.type==='income'?'text-green-500':'text-red-500'}">${t.type==='income'?'+':'-'}${Number(t.amount).toLocaleString('tr-TR')} ₺</p><button onclick="window.deleteItem('transactions', '${t.id}', window.fetchData)" class="opacity-0 group-hover:opacity-100 transition text-red-500/20 hover:text-red-500"><i class="fa-solid fa-trash-alt"></i></button></div></div>`).join('') || '<p class="text-center opacity-30 italic py-16 font-black uppercase text-[10px]">Henüz mühürlenmiş kayıt yok.</p>'}</div></div>`;
             lucide.createIcons();
         }
 
@@ -519,23 +529,36 @@
         };
 
         window.renderReportsUI = () => {
+            const assetData = {}; let totalAllAssets = 0;
+            investments.forEach(i => {
+                const currentVal = Number(i.quantity) * (Number(i.current_price) > 0 ? Number(i.current_price) : Number(i.average_cost));
+                assetData[i.asset_type] = (assetData[i.asset_type] || 0) + currentVal;
+                totalAllAssets += currentVal;
+            });
+
             document.getElementById('view-content').innerHTML = `
                 <div class="space-y-12 view-frame">
                     <div class="grid md:grid-cols-2 gap-10">
-                        <div class="glass-card p-8 rounded-[2.5rem] flex flex-col items-center shadow-xl relative overflow-hidden"><h4 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-widest italic border-b border-white/5 pb-2 w-full text-center">Gider Kategorileri</h4><div class="w-full h-72"><canvas id="expenseChart"></canvas></div></div>
-                        <div class="glass-card p-8 rounded-[2.5rem] flex flex-col items-center shadow-xl relative overflow-hidden"><h4 class="text-[10px] font-black uppercase text-slate-500 mb-8 tracking-widest italic border-b border-white/5 pb-2 w-full text-center">Banka Likidite Analizi</h4><div class="w-full h-72"><canvas id="bankPieChart"></canvas></div></div>
+                        <div class="glass-card p-8 rounded-[3.5rem] flex flex-col items-center shadow-2xl relative overflow-hidden min-h-[450px]"><h4 class="text-[10px] font-black uppercase text-slate-500 mb-10 tracking-widest italic border-b border-white/5 pb-4 w-full text-center">Gider Kategorileri Analizi</h4><div class="w-full h-80"><canvas id="expenseChart"></canvas></div></div>
+                        <div class="glass-card p-10 rounded-[3.5rem] flex flex-col items-center shadow-2xl relative overflow-hidden min-h-[450px]"><h4 class="text-[10px] font-black uppercase text-slate-500 mb-10 tracking-widest italic border-b border-white/5 pb-4 w-full text-center">Banka Likidite Dağılımı</h4><div class="w-full h-80"><canvas id="bankPieChart"></canvas></div></div>
                     </div>
                     
                     <div class="glass-card p-10 rounded-[3rem] shadow-2xl">
-                        <h4 class="font-black uppercase text-xs text-slate-500 mb-10 border-b border-white/5 pb-4 italic tracking-widest flex justify-between">Varlık & Fon Dağılım Tablosu <i data-lucide="table-properties" class="w-4"></i></h4>
+                        <h4 class="font-black uppercase text-xs text-slate-500 mb-10 border-b border-white/5 pb-4 italic tracking-widest flex justify-between">Varlık & Fon Dağılım Detayı <i data-lucide="pie-chart" class="w-4"></i></h4>
                         <div class="grid lg:grid-cols-12 gap-10 items-center">
                             <div class="lg:col-span-4 h-72 flex items-center justify-center"><canvas id="reportsAssetChart"></canvas></div>
                             <div class="lg:col-span-8 overflow-x-auto custom-scrollbar">
                                 <table class="w-full text-left">
                                     <thead class="bg-black/20 text-[10px] font-black uppercase text-slate-500 border-b border-white/10"><tr>
-                                        <th class="p-6">Varlık İsmi</th><th class="p-6">Sınıf</th><th class="p-6 text-right">Mevcut Değer</th><th class="p-6 text-right">Pay (%)</th>
+                                        <th class="p-6">Varlık</th><th class="p-6">Sınıf</th><th class="p-6 text-right">Değer</th><th class="p-6 text-right">Pay (%)</th>
                                     </tr></thead>
-                                    <tbody id="reports-inv-table" class="text-xs font-bold text-slate-300"></tbody>
+                                    <tbody id="reports-inv-table" class="text-[11px] font-bold text-slate-300">
+                                        ${investments.map(i => {
+                                            const val = Number(i.quantity) * (Number(i.current_price) > 0 ? Number(i.current_price) : Number(i.average_cost));
+                                            const share = totalAllAssets > 0 ? (val / totalAllAssets * 100).toFixed(1) : 0;
+                                            return `<tr class="border-b border-white/5 hover:bg-white/5 transition"><td class="p-6 font-black uppercase text-white">${i.asset_name}</td><td class="p-6 uppercase text-slate-500 text-[9px] tracking-widest">${i.asset_type}</td><td class="p-6 text-right font-black text-emerald-400 text-sm">${val.toLocaleString('tr-TR')} ₺</td><td class="p-6 text-right font-black text-blue-500">%${share}</td></tr>`;
+                                        }).join('')}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -547,36 +570,18 @@
             
             new Chart(document.getElementById('expenseChart'), { type: 'pie', data: { labels: Object.keys(expData), datasets: [{ data: Object.values(expData), backgroundColor: ['#ef4444','#f97316','#eab308','#8b5cf6','#ec4899','#06b6d4','#10b981'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false } });
             new Chart(document.getElementById('bankPieChart'), { type: 'doughnut', data: { labels: Object.keys(bankData), datasets: [{ data: Object.values(bankData), backgroundColor: ['#2563eb','#10b981','#8b5cf6','#ea580c','#ef4444','#ec4899'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false } });
-
-            // Raporlardaki Varlık Grafiği ve Tablosu
-            const assetData = {}; let totalAllAssets = 0;
-            investments.forEach(i => {
-                const currentVal = Number(i.quantity) * (Number(i.current_price) > 0 ? Number(i.current_price) : Number(i.average_cost));
-                assetData[i.asset_type] = (assetData[i.asset_type] || 0) + currentVal;
-                totalAllAssets += currentVal;
-            });
-
-            new Chart(document.getElementById('reportsAssetChart'), {
-                type: 'doughnut',
-                data: { labels: Object.keys(assetData), datasets: [{ data: Object.values(assetData), backgroundColor: ['#10b981','#2563eb','#f59e0b','#8b5cf6','#ef4444'], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-
-            document.getElementById('reports-inv-table').innerHTML = investments.map(i => {
-                const val = Number(i.quantity) * (Number(i.current_price) > 0 ? Number(i.current_price) : Number(i.average_cost));
-                const share = totalAllAssets > 0 ? (val / totalAllAssets * 100).toFixed(1) : 0;
-                return `<tr class="border-b border-white/5 hover:bg-white/5 transition"><td class="p-6 font-black uppercase text-white">${i.asset_name}</td><td class="p-6 uppercase text-slate-500 text-[10px] tracking-widest">${i.asset_type}</td><td class="p-6 text-right font-black text-emerald-400 text-sm">${val.toLocaleString('tr-TR')} ₺</td><td class="p-6 text-right font-black text-blue-500">%${share}</td></tr>`;
-            }).join('');
+            new Chart(document.getElementById('reportsAssetChart'), { type: 'doughnut', data: { labels: Object.keys(assetData), datasets: [{ data: Object.values(assetData), backgroundColor: ['#10b981','#2563eb','#f59e0b','#8b5cf6','#ef4444'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
             lucide.createIcons();
         };
 
+        // --- DATA SAVING ENGINE ---
         window.saveTransaction = async (e) => {
             e.preventDefault(); const btn = document.getElementById('save-btn'); btn.disabled = true; btn.innerText = "MÜHÜRLENİYOR...";
             const editId = document.getElementById('editing-id').value;
             const stdVal = document.getElementById('t-student').value; const isGm = stdVal === 'babaanne';
             const data = { teacher_id: userProfile.id, student_id: (isGm || !stdVal) ? null : stdVal, amount: Number(document.getElementById('t-amount').value), description: document.getElementById('t-desc').value, type: document.getElementById('t-type').value, category: document.getElementById('t-category').value, bank_name: document.getElementById('t-bank').value, is_grandmother: isGm, transaction_date: new Date().toISOString() };
             const res = editId ? await supabaseClient.from('transactions').update(data).eq('id', editId) : await supabaseClient.from('transactions').insert([data]);
-            if(!res.error) { await fetchData(); closeModal('transaction-modal'); navigate('dashboard'); } else alert(res.error.message); btn.disabled = false;
+            if(!res.error) { await fetchData(); closeModal('transaction-modal'); navigate('dashboard'); } else alert(res.error.message); btn.disabled = false; btn.innerText = "MÜHÜRLE";
         };
 
         window.setType = (type) => {
